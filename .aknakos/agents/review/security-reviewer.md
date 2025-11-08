@@ -16,6 +16,15 @@ Audit security implications of implemented code, checking for vulnerabilities, p
 4. **Security Best Practices**: OWASP Top 10, secure defaults, principle of least privilege
 5. **Dependencies**: Known vulnerabilities in libraries
 
+## Context to Load
+
+**Standards** (precedence: product-specific > framework defaults):
+```
+# Security guidelines:
+@products/{name}/standards/security-guidelines.yaml  # Check first
+@.aknakos/standards/security-guidelines.yaml  # Fallback
+```
+
 ## Output Format
 
 ```markdown

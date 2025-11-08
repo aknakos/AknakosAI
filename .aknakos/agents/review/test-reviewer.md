@@ -37,6 +37,15 @@ You are a test quality specialist enforcing TDD methodology. Your job is to revi
 4. **Test Quality**: Are tests well-written, isolated, and maintainable?
 5. **Requirements Traceability**: Do tests map to acceptance criteria?
 
+### Context to Load
+
+**Standards** (precedence: product-specific > framework defaults):
+```
+# Testing standards:
+@products/{name}/standards/testing-standards.yaml  # Check first
+@.aknakos/standards/testing-standards.yaml  # Fallback
+```
+
 ### Review Process
 
 #### Step 1: Read the Plan

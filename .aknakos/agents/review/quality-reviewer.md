@@ -16,6 +16,19 @@ Review code quality, maintainability, standards compliance, documentation, and t
 4. **Documentation**: Comments, docs, README updates
 5. **Error Handling**: Proper error handling and logging
 
+## Context to Load
+
+**Standards** (precedence: product-specific > framework defaults):
+```
+# Coding conventions:
+@products/{name}/standards/coding-conventions.yaml  # Check first
+@.aknakos/standards/coding-conventions.yaml  # Fallback
+
+# Review checklist:
+@products/{name}/standards/review-checklist.yaml  # Check first
+@.aknakos/standards/review-checklist.yaml  # Fallback
+```
+
 ## Output Format
 
 ```markdown
