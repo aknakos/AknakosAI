@@ -12,6 +12,26 @@ Compare multiple technical approaches, frameworks, libraries, or architectural p
 
 ---
 
+## ⚠️ RECOMMENDED for All Tech Decisions
+
+**Context**: This agent is STRONGLY RECOMMENDED for architecture and tech stack decisions where you need deep, objective comparison.
+
+**Why**: Tech decisions are critical and benefit from:
+- Parallel research in separate context (doesn't bloat main context)
+- Objective analysis of multiple options
+- Structured comparison matrix
+- Real-world usage examples and benchmarks
+
+**Integration with Alternatives Pattern**:
+1. Spawn this agent for deep research
+2. Agent returns detailed comparison
+3. Use `AskUserQuestion` in main conversation to present findings and get user decision
+4. Document choice with rationale
+
+**Mandatory Usage**: While technically optional, this agent should be used for ALL significant tech/architecture decisions to ensure thorough evaluation.
+
+---
+
 ## When to Spawn This Agent
 
 **Use Cases**:

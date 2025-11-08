@@ -14,6 +14,53 @@ This skill helps you explore and make architectural decisions through conversati
 
 ---
 
+## ⚠️ MANDATORY: Always Present Alternatives
+
+**CRITICAL RULE**: For EVERY tech/architecture decision, you MUST present 2-3 alternatives using `AskUserQuestion` tool.
+
+**Tech decisions include**:
+- Framework choices (React vs Vue vs Svelte)
+- Database selection (PostgreSQL vs MongoDB vs MySQL)
+- Architecture patterns (Monolith vs Microservices vs Serverless)
+- API style (REST vs GraphQL vs gRPC)
+- Authentication method (OAuth vs JWT vs Session)
+- State management (Redux vs Zustand vs Context API)
+- Hosting/infrastructure (AWS vs Vercel vs self-hosted)
+
+**Process for EVERY decision**:
+1. Identify 2-3 viable options
+2. For each option, define:
+   - Description
+   - Pros/benefits
+   - Cons/drawbacks
+   - Complexity (1-9 scale)
+3. **Use `AskUserQuestion` tool** to present alternatives
+4. Document choice with brief rationale
+
+**Example**:
+```
+Use AskUserQuestion to present:
+
+Option A: React + Vite
+- Pros: Large ecosystem, team experience, fast build times
+- Cons: Requires more setup, larger bundle
+- Complexity: 5/10
+
+Option B: Next.js
+- Pros: Full-stack framework, SSR built-in, great DX
+- Cons: Opinionated, vendor lock-in, heavier
+- Complexity: 6/10
+
+Option C: Svelte + SvelteKit
+- Pros: Smallest bundles, simple syntax, fast runtime
+- Cons: Smaller ecosystem, less team experience
+- Complexity: 4/10
+```
+
+**No exceptions**: Tech decisions are critical and must be explored thoroughly.
+
+---
+
 ## Process
 
 ### 1. Architecture Fundamentals
@@ -106,9 +153,11 @@ For each significant decision, consider:
 
 ---
 
-## Parallel Exploration
+## Parallel Exploration (Recommended for Deep Comparison)
 
-Consider spawning agents to explore multiple approaches:
+**When to use**: When you need detailed technical comparison of alternatives
+
+**Recommended**: Use `tech-exploration` agent for deep, parallel comparison of tech options:
 
 ```
 Spawn tech-exploration agent to compare:
@@ -117,7 +166,13 @@ Spawn tech-exploration agent to compare:
 - PostgreSQL vs MongoDB for this use case
 ```
 
-Agents explore in parallel and return comparison matrices.
+**Benefits**:
+- Agent explores options in parallel (separate context)
+- Returns detailed comparison matrix
+- Saves main context from exploration overhead
+- Provides objective analysis
+
+**Then**: Use `AskUserQuestion` to present findings and get user decision
 
 ---
 

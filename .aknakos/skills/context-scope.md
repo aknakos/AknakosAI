@@ -1,20 +1,187 @@
 # Context Scope Skill
 
-**Purpose**: Determine optimal context gathering strategy
+**Purpose**: Determine optimal context gathering strategy with tier-based approach
 
 **Phase**: Before Planning Mode or Epic Breakdown
 
-**When to Use**: When unsure if you need Context agent or planning mode's built-in tools are sufficient
+**When to Use**: When unsure which context loading strategy to use
 
 ---
 
 ## What This Skill Does
 
-This skill analyzes your context needs and recommends whether to:
-1. Use planning mode's built-in tools (@-mentions, Explore subagent)
-2. Spawn a Context agent for large-scale exploration
+This skill analyzes your context needs using a **3-tier hierarchy** and recommends whether to:
+1. Load Tier 1 (Strategic) context - Always required
+2. Selectively load Tier 2 (Detailed) context - Use @-mentions or context-fetcher
+3. Auto-apply Tier 3 (Standards) context - Reference standards as needed
+4. Use planning mode's built-in tools vs spawn Context agent
 
-**Why This Matters**: Context agents use tokens and take time. Use them when beneficial, not by default.
+**Why This Matters**: Context hierarchy ensures lower-level work aligns with higher-level strategic decisions while optimizing token usage.
+
+---
+
+## Context Hierarchy (3-Tier Model)
+
+Based on BMAD + Agent OS patterns:
+
+### Tier 1: Strategic Context (Always Load)
+
+**Documents**:
+- `mission.md` - Product vision, purpose, goals
+- `tech-stack.md` - Technology choices and rationale
+- `roadmap.md` - Development phases and priorities
+
+**Characteristics**:
+- Lightweight (1 page each)
+- Foundational product context
+- Always relevant to any work
+- High-level guidance
+
+**When to Load**:
+- Always load in planning mode
+- Always reference during Epic/Story work
+- Always check during implementation
+
+**How to Load**:
+```
+@products/{name}/mission.md
+@products/{name}/tech-stack.md
+@products/{name}/roadmap.md
+```
+
+---
+
+### Tier 2: Detailed Context (Selective Loading)
+
+**Documents**:
+- `project-brief.md` - Market analysis, user personas, competitive landscape (5-8 pages)
+- `architecture.md` - System architecture, schemas, API design (5-10 pages)
+- `ux-flow.md` - User flows, interface structure, interaction patterns (3-8 pages)
+- `prd.md` - Formal requirements with SHALL/MUST language
+
+**Characteristics**:
+- Detailed, comprehensive
+- Larger documents (3-25 pages)
+- Not always fully relevant
+- Contains specific decisions and rationale
+
+**When to Load**:
+- During planning mode: Load relevant sections via @-mentions
+- During Epic breakdown: Load PRD sections for specific Epic
+- During architecture decisions: Load architecture.md relevant sections
+- During UI/UX work: Load ux-flow.md for user flows and interaction patterns
+
+**How to Load**:
+
+**Option A - @-mentions (Small Scope)**:
+```
+@products/{name}/prd.md#user-authentication
+@products/{name}/architecture.md#database-schema
+@products/{name}/ux-flow.md#primary-user-flow
+```
+
+**Option B - context-fetcher Agent (Large Scope)**:
+```
+Spawn context-fetcher agent to extract relevant sections from:
+- prd.md: User authentication requirements
+- architecture.md: Auth flow and security architecture
+- ux-flow.md: Login flow and dashboard interaction patterns
+- project-brief.md: Security requirements from market analysis
+```
+
+---
+
+### Tier 3: Standards Context (Auto-Apply)
+
+**Precedence** (Hybrid approach):
+1. **Product-specific** (if exists): `products/{name}/standards/*.yaml`
+2. **Framework defaults**: `.aknakos/standards/*.yaml`
+
+**Documents**:
+- `coding-conventions.yaml` - Code style, naming, patterns
+- `architecture-patterns.yaml` - Common patterns to use/avoid
+- `testing-standards.yaml` - Test structure, coverage requirements
+- `security-guidelines.yaml` - Security best practices
+- `review-checklist.yaml` - Standard review criteria
+
+**Characteristics**:
+- Framework defaults: SvelteKit + Svelte 5 + Better-Auth + Drizzle
+- Product-specific overrides: Custom tech stack, stricter security, team conventions
+- Apply across product (product-specific) or all products (framework defaults)
+- Referenced automatically during implementation and review
+
+**When to Load**:
+- Planning mode: Reference testing-standards.yaml for test specs
+- Implementation: Apply coding-conventions.yaml
+- Review: Check against all standards
+- Architecture decisions: Reference architecture-patterns.yaml, security-guidelines.yaml
+
+**How to Check Precedence**:
+1. Check if `products/{name}/standards/{standard}.yaml` exists
+2. If YES: Use product-specific standard
+3. If NO: Use framework default `.aknakos/standards/{standard}.yaml`
+
+**How to Load**:
+```
+@.aknakos/standards/testing-standards.yaml (when writing test specs)
+# OR if product-specific exists:
+@products/{name}/standards/testing-standards.yaml
+@.aknakos/standards/security-guidelines.yaml (when designing auth)
+```
+
+---
+
+## Context Loading Strategy by Work Type
+
+### Working on Epic Breakdown
+
+**Load**:
+- **Tier 1**: mission.md, roadmap.md, tech-stack.md (always)
+- **Tier 2**: prd.md (full document or relevant sections)
+- **Tier 3**: Not needed yet
+
+**Rationale**: Need full product context + requirements to create realistic Epics
+
+---
+
+### Working in Planning Mode (Story/Task Creation)
+
+**Load**:
+- **Tier 1**: mission.md, tech-stack.md (always)
+- **Tier 2**:
+  - Current Epic file (always)
+  - @-mention relevant PRD sections (specific requirements)
+  - @-mention relevant architecture patterns (if novel architecture)
+- **Tier 3**: testing-standards.yaml (for test specs)
+
+**Rationale**: Need Epic context + specific requirements + testing guidance
+
+---
+
+### Working on Implementation
+
+**Context already in plan** (from planning mode output):
+- Plan contains distilled context
+- No additional loading needed
+- Self-contained
+
+**If context missing**:
+- Re-enter planning mode
+- Load Tier 1 + relevant Tier 2 sections
+- Update plan
+
+---
+
+### Working on Architecture Decisions
+
+**Load**:
+- **Tier 1**: mission.md, roadmap.md (always)
+- **Tier 2**:
+  - project-brief.md (user needs, scale requirements)
+  - architecture.md (existing architecture if modifying)
+- **Tier 3**: architecture-patterns.yaml, security-guidelines.yaml
+
+**Rationale**: Need product vision + user context + existing architecture + standards
 
 ---
 
@@ -53,7 +220,46 @@ This skill analyzes your context needs and recommends whether to:
 
 ---
 
-### Option 2: Context Agent
+### Option 2: context-fetcher Agent (Selective Context Extraction)
+
+**New Agent**: `.aknakos/agents/context-fetcher.md`
+
+**Use When**:
+- Need specific sections from large Tier 2 documents
+- Multiple Tier 2 documents to extract from
+- Want to avoid loading full 10-25 page documents
+- Need focused context summary
+
+**How It Works** (Agent OS pattern):
+- Specialized agent extracts ONLY relevant sections
+- Conditional loading: "only if not already in context"
+- Returns focused summary instead of full documents
+- Prevents token bloat from large docs
+
+**Example**:
+```
+Spawn context-fetcher agent:
+
+Extract from Tier 2 documents:
+- prd.md: User authentication requirements (REQ-AUTH-*)
+- architecture.md: Security architecture section
+- project-brief.md: Security requirements from competitive analysis
+
+Return focused summary of auth-related context.
+```
+
+**Benefits**:
+- Token-efficient (extracts vs full load)
+- DRY principle (single source of truth)
+- Avoids redundant context
+
+**Trade-offs**:
+- Additional step (spawn, wait, review)
+- Risk of missing context if extraction too narrow
+
+---
+
+### Option 3: Context Agent (Large-Scale Codebase Exploration)
 
 **Use When**:
 - Large codebase (100+ files)
@@ -144,7 +350,15 @@ Use planning mode:
 - Explore: Search for "JWT token" patterns
 ```
 
-**Tier 3: Context Agent** (10+ files or multi-domain)
+**Tier 3: context-fetcher Agent** (Selective Tier 2 extraction)
+```
+Spawn context-fetcher agent:
+- Extract user authentication requirements from prd.md
+- Extract security architecture section from architecture.md
+- Return focused summary
+```
+
+**Tier 4: context-gatherer Agent** (Large codebase exploration)
 ```
 Spawn context-gatherer agent:
 - Analyze entire auth system across frontend, backend, database
@@ -284,16 +498,18 @@ After spawning Context agent once:
 
 ## Common Patterns
 
-| Situation | Recommendation |
-|-----------|---------------|
+| Situation | Context Strategy |
+|-----------|------------------|
+| Epic breakdown | Tier 1 (always) + Tier 2 (prd.md full) |
+| Planning mode | Tier 1 + Epic + @-mention PRD sections + Tier 3 (testing standards) |
+| Implementation | Context in plan (self-contained) |
+| Architecture decisions | Tier 1 + Tier 2 (project-brief, architecture) + Tier 3 (patterns, security) |
+| Need PRD sections | @-mention specific sections OR context-fetcher agent |
+| Need architecture sections | @-mention specific sections OR context-fetcher agent |
 | Modify specific file | @-mention or Read |
-| Understand one feature | Planning mode Explore |
-| Understand subsystem | Planning mode tools |
-| Architecture overview | Context agent |
-| Multi-domain integration | Context agent |
-| Large unknown codebase | Context agent |
+| Understand subsystem | Planning mode Explore |
+| Large codebase exploration | context-gatherer agent |
 | Quick lookup | Planning mode |
-| Comprehensive mapping | Context agent |
 
 ---
 

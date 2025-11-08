@@ -74,7 +74,46 @@ For each Epic, specify:
 
 ---
 
-### 4. Epic File Structure
+### 4. Consider Alternative Designs (If Non-Trivial)
+
+**When**: For complex Epics (complexity 6+) with multiple implementation strategies
+
+**Process**:
+1. Identify if Epic could be implemented in 2-3 different ways
+2. For each alternative, define:
+   - Brief description of approach
+   - Pros/benefits
+   - Cons/drawbacks
+3. Use `AskUserQuestion` tool to present alternatives
+4. Document choice briefly in Epic's "Alternative Designs" section
+
+**Example Scenarios**:
+- Authentication: OAuth vs JWT vs Session-based
+- Data sync: Real-time WebSocket vs Polling vs Server-Sent Events
+- File upload: Direct to S3 vs Through server vs Presigned URLs
+- State management: Redux vs Context API vs Zustand
+
+**Documentation Format**:
+```markdown
+## Alternative Designs
+
+**Alternative A**: OAuth 2.0 with third-party provider (Auth0)
+- Pros: Proven security, faster to implement, social login support
+- Cons: External dependency, recurring costs
+
+**Alternative B**: Custom JWT authentication
+- Pros: Full control, no external dependencies, no recurring cost
+- Cons: More implementation work, security responsibility
+
+**Chosen**: Alternative A (OAuth with Auth0)
+**Rationale**: Security complexity not worth building ourselves; team lacks auth expertise
+```
+
+**Note**: Only present alternatives for non-trivial Epics where multiple approaches genuinely exist
+
+---
+
+### 5. Epic File Structure
 
 **Template**:
 ```markdown
