@@ -1,4 +1,4 @@
-Always sacrifice grammar for the sake of conciseness and clarity.
+Always sacrifice grammar for the sake of conciseness and clarity. You must keep CLAUDE.md less than 500 lines.
 
 # Aknakos Framework - AI Agent Framework for Claude Code
 
@@ -25,22 +25,79 @@ Always sacrifice grammar for the sake of conciseness and clarity.
 
 ## Workflow Phases
 
-### Phase 1-3: Strategic Planning
+### Phase 1: Strategic Documents (Conversational Discovery)
 
-**Phase 1 - Vision**: Use `elicitation`, `product-vision`, or `architecture` skills. Spawn `market-research` or `competitive-analysis` agents if needed. Output: Clear vision (conversational, not saved).
+**Phase 1a - Mission** (Required, Lightweight):
+- Use `create-mission` skill
+- Conversational discovery (10-15 min)
+- Output: `mission.md` (1 page) + `roadmap.md` (1-2 pages)
+- Agent OS-style lightweight references
+- When: Every product
 
-**Phase 2 - PRD**: Use `create-prd` skill to generate formal requirements doc using SHALL/MUST language. Save to `products/{product-name}/YYYY-MM-DD-prd.md`. Strategic review before proceeding.
+**Phase 1b - Project Brief** (Optional, Complex Products):
+- Use `create-project-brief` skill
+- BMAD Analyst-style deep elicitation (20-30 min)
+- Advanced techniques: 6 Hats, 5 Whys, role-playing, self-critique
+- Output: `YYYY-MM-DD-project-brief.md` (5-8 pages)
+- When: Complexity 4-9 OR user requests thorough planning
+- Optional: Spawn `market-research` agent for parallel research
 
-**Phase 3 - Epic Breakdown**: Use `epic-breakdown` skill to create Epics from PRD. Each Epic: name, description, acceptance criteria, dependencies, complexity (1-9). Save to `products/{product-name}/epics/YYYY-MM-DD-epic-name.md`. Optional: Use `epic-parallel` agent for multiple Epics simultaneously.
+**Phase 1c - Architecture** (Optional, Complex Products):
+- Use `create-architecture-doc` skill
+- BMAD Architect-style alternatives-driven exploration (30-45 min)
+- Mandatory alternatives for all tech decisions (use AskUserQuestion)
+- Output: `YYYY-MM-DD-architecture.md` (5-10 pages) + `tech-stack.md` (1 page)
+- When: Complexity 4-9 OR novel architecture decisions
+- Optional: Spawn `tech-exploration` agent for deep comparisons
+
+**Phase 1d - UX Flow** (Optional, User-Facing Products):
+- Use `create-ux-flow` skill
+- Conversational UX design (15-25 min)
+- Define user flows, interface structure, interaction patterns
+- Output: `YYYY-MM-DD-ux-flow.md` (3-8 pages)
+- When: User-facing products (Complexity 4-9) OR significant UI/UX needs
+- Informs PRD with UX requirements and constraints
+
+### Phase 2: PRD (Formal Requirements)
+
+**Phase 2 - PRD**:
+- Use `create-prd` skill (enhanced with BMAD PM persona)
+- References mission.md, project-brief.md, architecture.md, ux-flow.md
+- Ruthless prioritization (MoSCoW: Must/Should/Could/Won't)
+- Traceability: Link PRD to source documents
+- Output: `YYYY-MM-DD-prd.md` with SHALL/MUST language
+- Strategic review before proceeding
+
+### Phase 3: Epic Breakdown
+
+**Phase 3 - Epic Breakdown**:
+- Use `epic-breakdown` skill
+- Each Epic: name, description, acceptance criteria, dependencies, complexity (1-9)
+- Epics include traceability frontmatter (PRD references, architecture references)
+- Save to `products/{product-name}/epics/YYYY-MM-DD-epic-name.md`
+- Optional: Use `epic-parallel` agent for multiple Epics simultaneously
+
+### Phase 3.5: Alignment Validation (Quality Gate)
+
+**Phase 3.5 - Validate Alignment** (Required):
+- Use `validate-alignment` skill
+- BMAD PO Master Validation Checklist pattern
+- Checks: Requirements coverage, Epic-PRD traceability, architecture compliance, UX alignment (if ux-flow.md exists), mission alignment
+- Output: Validation report (PASS/CONCERNS/FAIL)
+- Location: `products/{name}/reviews/validation/YYYY-MM-DD-epic-validation.md`
+- **If FAIL**: Block progression, use `escalate-conflict` skill if parent docs need changes
+- **If PASS/CONCERNS**: Proceed to planning mode
 
 ### Phase 4: Planning Mode
 
 Enter planning mode (Shift+Tab twice) to break Epic into Stories/Tasks/Test Specs.
 
-**Context gathering**:
-- Small scope (2-5 files): @-mentions or Explore subagent
-- Medium scope: Explore subagent in planning mode
-- Large scope: Exit, spawn `context-gatherer` agent, review results, re-enter planning
+**Context loading** (3-Tier Hierarchy):
+- **Tier 1** (Always load): mission.md, tech-stack.md, roadmap.md
+- **Tier 2** (Selective): Epic file (always), @-mention PRD sections, @-mention architecture patterns
+- **Tier 3** (As needed): testing-standards.md, security-guidelines.md
+- Use `context-scope` skill to determine strategy
+- For large Tier 2 docs: Spawn `context-fetcher` agent for selective extraction
 
 **Create** (ephemeral, not saved as files):
 - Stories: description, acceptance criteria, dependencies
@@ -80,9 +137,15 @@ Optional: Save plan to `products/{product-name}/plans/epic-name/YYYY-MM-DD-plan.
 
 1. **test-reviewer**: Tests unchanged, good coverage, match plan
 2. **security-reviewer**: Security audit (auth, data, vulnerabilities)
-3. **architecture-reviewer**: Design consistency, patterns, tech debt
+3. **architecture-reviewer**: **ENHANCED** - Checks architecture.md compliance, tech-stack.md alignment, pattern consistency
 4. **quality-reviewer**: Code quality, maintainability, standards
-5. **requirements-reviewer**: Acceptance criteria completeness
+5. **requirements-reviewer**: **ENHANCED** - Checks Epic alignment, PRD traceability, mission alignment
+
+**Review Enhancements**:
+- Agents load strategic docs (mission, PRD, architecture, tech-stack, ux-flow)
+- Check alignment with upper-level decisions
+- Flag deviations (documented vs undocumented)
+- Recommend `escalate-conflict` if parent docs need changes
 
 **Review Tiers** (complexity-based):
 - Trivial (1-3): Quick scan, auto-approve if PASS
@@ -90,6 +153,8 @@ Optional: Save plan to `products/{product-name}/plans/epic-name/YYYY-MM-DD-plan.
 - Complex (7-9): Deep audit, human review required
 
 Reports saved to `products/{product-name}/reviews/epic-name/`. Decision: PASS/CONCERNS/FAIL.
+
+**Meta-Review** (optional): After 5 reviews complete, spawn `meta-reviewer` agent to synthesize findings, resolve conflicts, prioritize fixes.
 
 ### Phase 7: Epic Completion
 
@@ -100,17 +165,35 @@ Use `epic-review` skill to synthesize review reports, extract learnings, identif
 ## Skills & Agents
 
 **Skills** (stay in main context): See `.aknakos/skills/` for full definitions
-- `elicitation`, `product-vision`, `architecture`: Strategic planning
-- `create-prd`: Generate formal PRD
-- `epic-breakdown`: Break PRD into Epics
-- `whats-next`: Show next actions based on workflow state
-- `context-scope`: Decide if Context agent needed
+
+*Strategic Documents*:
+- `create-mission`: Generate mission.md + roadmap.md (Agent OS style, lightweight)
+- `create-project-brief`: BMAD Analyst-style project brief (advanced elicitation)
+- `create-architecture-doc`: BMAD Architect-style architecture (alternatives-driven)
+- `create-ux-flow`: UX flow definition (user flows, interface structure, interaction patterns)
+- `create-prd`: Generate formal PRD with BMAD PM persona (ruthless prioritization)
+
+*Workflow Management*:
+- `elicitation`, `product-vision`, `architecture`: Legacy strategic planning
+- `epic-breakdown`: Break PRD into Epics with traceability
+- `validate-alignment`: BMAD PO validation checklist (Epic-PRD-Architecture alignment)
+- `escalate-conflict`: Block-and-escalate for parent doc conflicts
 - `epic-review`: Synthesize review reports
+
+*Context Management*:
+- `context-scope`: 3-tier context strategy (Strategic/Detailed/Standards)
+- `whats-next`: Show next actions based on workflow state
+
+*Quality & Metrics*:
+- `trace-requirements`: Auto-generate traceability matrix (Mission → PRD → Epic → Tests → Code)
+- `validate-state`: Verify workflow.yaml consistency, detect orphaned files/broken references
+- `compare-standards`: Show product vs framework standards differences, visualize inheritance
+- `analyze-metrics`: Track time/complexity accuracy, improve estimates from historical data
 
 **Agents** (parallel, separate contexts): See `.aknakos/agents/` for full definitions
 
-*Research*: `market-research`, `tech-exploration`, `epic-parallel`, `context-gatherer`
-*Review*: `test-reviewer`, `security-reviewer`, `architecture-reviewer`, `quality-reviewer`, `requirements-reviewer` (auto-triggered after TDD)
+*Research*: `market-research`, `tech-exploration`, `epic-parallel`, `context-gatherer`, `context-fetcher` (selective Tier 2 extraction)
+*Review*: `test-reviewer`, `security-reviewer`, `architecture-reviewer`, `quality-reviewer`, `requirements-reviewer`, `meta-reviewer` (synthesizes all 5 reviews, runs after parallel reviews complete)
 
 ---
 
@@ -152,7 +235,7 @@ Use `epic-review` skill to synthesize review reports, extract learnings, identif
 
 Tracks: framework version, current phase, products, PRDs, Epics, TDD status, reviews, next actions.
 
-**Phases**: vision → prd → epic_breakdown → planning_mode → tdd_tests_written → tdd_test_review → tdd_implementation → tdd_refactor → review → epic_complete
+**Phases**: mission_created → project_brief_created (optional) → architecture_created (optional) → ux_flow_created (optional) → prd → epic_breakdown → validation_complete → planning_mode → tdd_tests_written → tdd_test_review → tdd_implementation → tdd_refactor → review → epic_complete
 
 **Query**: Use `whats-next` skill for current state and next actions.
 **Update**: Edit workflow.yaml manually.
@@ -161,14 +244,30 @@ See workflow.yaml file for structure example.
 
 ---
 
-## Context Strategy
+## Context Strategy (3-Tier Hierarchy)
 
-**Single file**: @-mentions in planning mode
-**Small scope (2-5 files)**: Planning mode Explore subagent
-**Medium scope**: @-mentions for PRD + architecture docs
-**Large scope**: Spawn `context-gatherer` agent
+**Tier 1: Strategic Context** (Always Load):
+- mission.md, tech-stack.md, roadmap.md
+- Lightweight (1 page each)
+- Load in planning mode, Epic work, implementation
 
-**Planning Mode Tools** (read-only): Read, Glob, Grep, Explore
+**Tier 2: Detailed Context** (Selective Loading):
+- project-brief.md, architecture.md, ux-flow.md, prd.md (3-25 pages)
+- @-mention specific sections OR spawn `context-fetcher` for extraction
+- DRY principle: single source of truth
+
+**Tier 3: Standards** (Hybrid - product-specific > framework defaults):
+- **Precedence**: `products/{name}/standards/*.yaml` (if exists) > `.aknakos/standards/*.yaml`
+- **Files**: coding-conventions, architecture-patterns, testing-standards, security-guidelines, review-checklist (all YAML)
+- **Framework defaults**: SvelteKit + Svelte 5 + Better-Auth + Drizzle + Vitest + Cypress + Bun
+- **Product-specific**: Optional custom standards (use `create-standards` skill after mission creation)
+- Referenced during planning, implementation, review
+
+**Loading Strategies**:
+- **Small scope**: @-mentions
+- **Medium scope**: Planning mode Explore
+- **Large Tier 2 docs**: context-fetcher agent (selective extraction)
+- **Large codebase**: context-gatherer agent
 
 Use `context-scope` skill to determine strategy.
 
@@ -181,13 +280,38 @@ Use `context-scope` skill to determine strategy.
 ├── state/workflow.yaml
 ├── skills/*.md
 ├── agents/**/*.md
-└── templates/*.md
+├── templates/*.md
+├── standards/           # Framework default standards (YAML)
+│   ├── coding-conventions.yaml
+│   ├── architecture-patterns.yaml
+│   ├── testing-standards.yaml
+│   ├── security-guidelines.yaml
+│   └── review-checklist.yaml
+└── references/          # NEW - Reference docs
+    └── elicitation-techniques.md
 
 products/{product-name}/
-├── YYYY-MM-DD-prd.md
-├── epics/YYYY-MM-DD-epic-name.md
+├── mission.md                          # Lightweight vision (Agent OS)
+├── roadmap.md                          # Development phases (Agent OS)
+├── tech-stack.md                       # Tech choices (Agent OS)
+├── YYYY-MM-DD-project-brief.md        # Strategic brief (BMAD, optional)
+├── YYYY-MM-DD-architecture.md         # Architecture spec (BMAD, optional)
+├── YYYY-MM-DD-ux-flow.md              # UX flow spec (optional)
+├── YYYY-MM-DD-prd.md                  # Formal requirements
+├── standards/                          # Product-specific standards (optional, YAML)
+│   ├── coding-conventions.yaml        # Overrides framework defaults
+│   ├── architecture-patterns.yaml
+│   ├── testing-standards.yaml
+│   ├── security-guidelines.yaml
+│   └── review-checklist.yaml
+├── epics/YYYY-MM-DD-epic-name.md      # Traceability frontmatter
 ├── plans/epic-name/YYYY-MM-DD-plan.md
-└── reviews/epic-name/YYYY-MM-DD-*-review.md
+└── reviews/
+    ├── validation/                     # Validation reports
+    │   └── YYYY-MM-DD-epic-validation.md
+    ├── conflicts/                      # Conflict reports
+    │   └── YYYY-MM-DD-conflict-{type}.md
+    └── epic-name/YYYY-MM-DD-*-review.md
 ```
 
 **Naming**: Date prefix (`YYYY-MM-DD-`), lowercase with hyphens.
@@ -196,7 +320,7 @@ products/{product-name}/
 
 ## Quick Reference
 
-**Workflow**: Vision → PRD → Epics → Plan (Shift+Tab×2) → Tests (RED) → Review Tests → Implement (GREEN) → Refactor → Automated Review → Complete
+**Workflow**: Mission (1a) → [Project Brief (1b, optional)] → [Architecture (1c, optional)] → [UX Flow (1d, optional)] → PRD (2) → Epics (3) → **Validate** (3.5) → Plan (4, Shift+Tab×2) → Tests (5 RED) → Review Tests → Implement (5 GREEN) → Refactor → Automated Review (6) → Complete (7)
 
 **Commands**:
 - Enter planning mode: Shift+Tab twice
