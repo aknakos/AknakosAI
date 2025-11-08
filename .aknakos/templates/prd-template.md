@@ -124,7 +124,36 @@ This product SHALL follow Test-Driven Development (TDD):
 
 ---
 
-## 6. Constraints & Assumptions
+## 6. Alternatives Considered (Optional)
+
+**Note**: Document alternatives only for major strategic or technical decisions.
+
+### {Decision Point 1 - e.g., Architecture Approach}
+
+**Alternative A**: {Brief description}
+- Pros: {Benefits}
+- Cons: {Drawbacks}
+- Complexity: {1-9}
+
+**Alternative B**: {Brief description}
+- Pros: {Benefits}
+- Cons: {Drawbacks}
+- Complexity: {1-9}
+
+**Chosen**: {Alternative X}
+**Rationale**: {One-line reason for choice}
+
+### {Decision Point 2 - e.g., Database Choice}
+
+**Alternative A**: {Brief description}
+**Alternative B**: {Brief description}
+
+**Chosen**: {Alternative X}
+**Rationale**: {One-line reason for choice}
+
+---
+
+## 7. Constraints & Assumptions
 
 ### Constraints
 
@@ -149,7 +178,7 @@ This product SHALL follow Test-Driven Development (TDD):
 
 ---
 
-## 7. Out of Scope
+## 8. Out of Scope
 
 The following are explicitly out of scope for this release:
 
@@ -158,7 +187,7 @@ The following are explicitly out of scope for this release:
 
 ---
 
-## 8. Approval
+## 9. Approval
 
 **Approved By**: {Name}
 **Date**: {YYYY-MM-DD}

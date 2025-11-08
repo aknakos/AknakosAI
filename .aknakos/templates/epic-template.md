@@ -29,6 +29,23 @@
 
 ---
 
+## Alternative Designs (Optional)
+
+**Note**: Document alternatives only for non-trivial Epics with multiple implementation strategies.
+
+**Alternative A**: {Brief description of approach}
+- Pros: {Benefits}
+- Cons: {Drawbacks}
+
+**Alternative B**: {Brief description of approach}
+- Pros: {Benefits}
+- Cons: {Drawbacks}
+
+**Chosen**: {Alternative X}
+**Rationale**: {One-line reason for choice}
+
+---
+
 ## Testing Considerations
 
 **Test Types Needed**:
