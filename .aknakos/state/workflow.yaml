@@ -1,0 +1,93 @@
+# Aknakos Framework - Workflow State
+# This file tracks the current state of your development workflow
+
+framework_version: "1.0"
+current_phase: "vision"  # vision | prd | epic_breakdown | planning_mode | tdd_tests_written | tdd_test_review | tdd_implementation | tdd_refactor | review | epic_complete
+
+products: {}
+  # Example structure:
+  # my-product:
+  #   current_status: "in_progress"  # draft | in_progress | complete
+  #
+  #   prd:
+  #     file: "2025-11-08-prd.md"
+  #     status: "approved"  # draft | review | approved
+  #     review_date: "2025-11-08"
+  #     reviewer: "human"  # or agent name
+  #
+  #   epics:
+  #     - name: "user-authentication"
+  #       file: "2025-11-08-user-authentication.md"
+  #       status: "review"  # drafted | planning | tdd_tests_written | tdd_test_review | tdd_implementing | tdd_refactor | review | complete
+  #       implementation_complexity: 6  # 1-9 scale (1-3=trivial, 4-6=moderate, 7-9=complex)
+  #       created_date: "2025-11-08"
+  #
+  #       tdd:
+  #         plan_includes_test_specs: true
+  #         tests_written: true
+  #         tests_reviewed: true
+  #         tests_reviewed_by: "manual"  # or "test-reviewer agent"
+  #         tests_passing: true
+  #         tests_changed_during_implementation: false  # MUST stay false (critical)
+  #         test_change_reason: null  # Only if tests_changed_during_implementation is true
+  #
+  #       plan:
+  #         saved: true  # Whether plan was saved to file
+  #         file: "plans/user-authentication/2025-11-08-plan.md"
+  #         stories_count: 4
+  #         tasks_count: 12
+  #
+  #       reviews:
+  #         test: "PASS"  # PASS | CONCERNS | FAIL | PENDING
+  #         security: "PASS"
+  #         architecture: "CONCERNS"
+  #         quality: "PASS"
+  #         requirements: "PASS"
+  #         last_review_date: "2025-11-08"
+  #
+  #       concerns:
+  #         - reviewer: "architecture"
+  #           issue: "Token storage pattern not aligned with OAuth best practices"
+  #           severity: "medium"
+  #           status: "open"  # open | addressed | waived
+  #
+  #       next_action: "Address architecture concerns in token storage"
+  #
+  #     - name: "dashboard"
+  #       file: "2025-11-09-dashboard.md"
+  #       status: "planning"
+  #       implementation_complexity: 4
+  #       created_date: "2025-11-09"
+  #       next_action: "Enter planning mode to break down into Stories and create test specifications"
+  #
+  #   next_actions:
+  #     - "Fix authentication architecture concerns (token storage pattern)"
+  #     - "Re-run architecture-reviewer for user-authentication epic"
+  #     - "Complete planning for dashboard epic"
+
+context_strategy:
+  last_used: "planning_mode_explore"  # planning_mode_explore | context_agent | none
+  context_agent_threshold: "large_scope"  # small_scope | medium_scope | large_scope
+  context_agent_spawn_count: 0
+
+review_settings:
+  auto_trigger: true  # Automatically trigger review agents after implementation
+  parallel_reviews: true  # Run all review agents in parallel
+  complexity_threshold: 4  # Below this = lighter reviews, above = deeper reviews
+  enabled_reviewers:
+    - test
+    - security
+    - architecture
+    - quality
+    - requirements
+
+# Workflow statistics (optional tracking)
+statistics:
+  total_products: 0
+  total_epics: 0
+  completed_epics: 0
+  total_reviews: 0
+  review_outcomes:
+    pass: 0
+    concerns: 0
+    fail: 0

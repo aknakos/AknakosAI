@@ -1,0 +1,56 @@
+# Epic: {Epic Name}
+
+**Status**: Drafted | Planning | In Progress | Review | Complete
+**Complexity**: {1-9}
+**Created**: {YYYY-MM-DD}
+**Dependencies**: {Other Epic names, or "None"}
+
+---
+
+## Description
+
+{2-3 sentences explaining what this Epic accomplishes and why it's valuable}
+
+---
+
+## Acceptance Criteria
+
+- [ ] {Criterion 1 - specific, testable}
+- [ ] {Criterion 2 - specific, testable}
+- [ ] {Criterion 3 - specific, testable}
+- [ ] {Criterion 4 - specific, testable}
+
+---
+
+## Related PRD Requirements
+
+- **REQ-{ID}-001**: {Brief description of requirement}
+- **REQ-{ID}-002**: {Brief description of requirement}
+
+---
+
+## Testing Considerations
+
+**Test Types Needed**:
+- Unit tests: {What to unit test}
+- Integration tests: {What integrations to test}
+- E2E tests: {What user flows to test}
+
+**Edge Cases to Consider**:
+- {Edge case 1}
+- {Edge case 2}
+
+---
+
+## Notes
+
+{Any additional context, technical considerations, or open questions}
+
+**Technical Considerations**:
+- {Consideration 1}
+
+**Dependencies**:
+- {If depends on other Epics, explain why}
+
+**Open Questions**:
+- {Question 1 that needs answering}
