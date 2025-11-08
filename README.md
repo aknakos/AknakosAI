@@ -137,6 +137,14 @@ products/                    # Your products go here
 - Optional Context agent for large codebases
 - Fast and flexible
 
+### ✅ Alternatives-Driven Decisions
+
+- Automatic alternatives presentation when multiple options exist
+- AskUserQuestion tool for user choice at key decision points
+- Brief rationale documentation (not heavy docs)
+- Mandatory for tech/architecture decisions
+- 2-3 alternatives based on complexity
+
 ---
 
 ## Documentation
