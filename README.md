@@ -286,13 +286,16 @@ Please address security concern, then we can complete the Epic.
 
 ---
 
-## Credits
+## Credits & Acknowledgments
 
-Inspired by:
-- **BMAD-METHOD**: Strategic planning and multi-agent collaboration
-- **Agent OS**: Context layers and orchestration
-- **OpenSpec**: Lightweight implementation
-- **Spec Kit**: Phased workflow structure
+Aknakos builds upon the excellent work of several open-source frameworks:
+
+- **[BMAD-METHOD](https://github.com/cheddarfox/bmad-method)**: Strategic planning, elicitation techniques, and quality assurance
+- **[Agent OS](https://github.com/buildermethods/agent-os)**: Context layers, orchestration patterns, and spec-driven development
+- **[OpenSpec](https://github.com/Fission-AI/OpenSpec)**: Lightweight implementation and fast execution
+- **[Spec Kit](https://github.com/github/spec-kit)**: Phased workflow structure and GitHub integration
+
+See **[CREDITS.md](./CREDITS.md)** for detailed acknowledgments and what we learned from each framework.
 
 Optimized specifically for **Claude Code** with integrated **TDD methodology**.
 
@@ -300,7 +303,9 @@ Optimized specifically for **Claude Code** with integrated **TDD methodology**.
 
 ## License
 
-Open source - use and modify as needed for your projects.
+**MIT License** - Free to use, modify, and distribute.
+
+See [LICENSE](./LICENSE) for full details.
 
 ---
 
