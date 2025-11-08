@@ -1,0 +1,116 @@
+# Coding Conventions
+version: "2.0"
+updated: "2025-11-08"
+
+# Naming Conventions
+naming:
+  components: "PascalCase (Hero.svelte, PricingCard.svelte)"
+  routes: "kebab-case (verify-email/, api/auth/)"
+  files: "kebab-case (better-auth.ts, webhook-handler.ts)"
+  variables: "camelCase (userAuthToken, emailVerified)"
+  booleans: "is/has/should prefix (isAuthenticated, hasPermission)"
+  constants: "UPPER_SNAKE_CASE (MAX_RETRY_ATTEMPTS, API_BASE_URL, BCRYPT_SALT_ROUNDS)"
+  functions: "verb-based camelCase (fetchUserData, validateEmail, sendVerificationEmail)"
+  database_tables: "snake_case (users, verification_tokens)"
+  database_columns: "snake_case (email_verified, created_at)"
+  indexes: "idx_{table}_{columns} or {table}_{column}_idx"
+
+# File Organization
+organization:
+  pattern: "feature-based layered"
+  structure:
+    routes: "Pages + API endpoints (SvelteKit routing)"
+    lib_server: "Server-only code (database, auth, cannot import in client)"
+    lib_shared: "Client + server (components, utilities, types)"
+    domain_modules: "Service integrations (email/, stripe/)"
+  schema:
+    simple: "lib/server/db/schema.ts (single file)"
+    complex: "lib/server/db/schema/ (split by domain)"
+
+# Code Formatting
+formatting:
+  indentation: "tabs"
+  quotes: "single"
+  semicolons: "required"
+  line_length: 100
+  prettier:
+    useTabs: true
+    singleQuote: true
+    trailingComma: "none"
+    printWidth: 100
+
+# Svelte 5 Patterns
+svelte5:
+  state: "let email = $state('') - for reactive variables"
+  derived: "$derived.by(() => { /* compute */ }) - for computed values"
+  effect: "$effect(() => { /* side effects */ })"
+  avoid: "Old $: reactive statements"
+
+# Import Order
+import_order:
+  - "External libraries (betterAuth, bcrypt, drizzle)"
+  - "Internal modules ($lib, $app)"
+  - "Types (import type { User })"
+  - "Relative imports (./schema)"
+
+# Comments
+comments:
+  do:
+    - "Explain WHY not WHAT"
+    - "Reference architecture docs (docs/architecture.md#Section)"
+    - "Complex algorithms or business logic"
+    - "Non-obvious decisions"
+  dont:
+    - "State the obvious"
+    - "Describe what code does (self-documenting)"
+  format: "// TODO(initials): Description"
+
+# Error Handling
+error_handling:
+  - "Always wrap async operations in try-catch"
+  - "User-friendly messages (never expose stack traces)"
+  - "Specific HTTP status codes (400, 401, 404, 409, 500)"
+  - "Structured error responses: { error: { code, message } }"
+  - "Detailed logging for debugging"
+
+# Logging
+logging:
+  pattern: "Structured with prefixes"
+  examples:
+    - "console.log('[API:Query]', { user_id, duration_ms })"
+    - "console.error('[DB:Error]', { query, error: error.message })"
+  development: "console.log with emojis OK (📧, ✅)"
+  production: "Use proper logging service"
+  never_log:
+    - "Passwords"
+    - "API keys"
+    - "Session tokens"
+    - "Full secrets (only prefix: key.substring(0, 7))"
+
+# Environment Variables
+env_vars:
+  validation: "Fail-fast on startup if missing"
+  example: "if (!DATABASE_URL) throw new Error('DATABASE_URL is required')"
+  centralized: "lib/config.ts for complex projects"
+
+# TypeScript
+typescript:
+  strict_mode: true
+  no_any: "Use unknown instead"
+  unused_vars: "Use _ prefix for intentionally unused (_user, _index)"
+
+# Code Review Checklist
+review_checklist:
+  - "Naming conventions followed"
+  - "Feature-based organization (server/shared separation)"
+  - "Svelte 5 runes used ($state, $derived, $effect)"
+  - "Functions < 50 lines"
+  - "Error handling with user-friendly messages"
+  - "Comments explain WHY and reference architecture"
+  - "No hardcoded secrets or magic numbers"
+  - "Environment variables validated on startup"
+  - "Structured logging with prefixes"
+  - "TypeScript strict mode (no any)"
+  - "No unused imports or variables"
+  - "Consistent formatting (tabs, single quotes, 100 char max)"
+  - "Tests written (see testing-standards.yaml)"

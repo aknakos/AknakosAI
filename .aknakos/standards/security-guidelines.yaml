@@ -1,0 +1,197 @@
+# Security Guidelines
+version: "2.0"
+updated: "2025-11-08"
+
+# Authentication (Better-Auth)
+authentication:
+  library: "better-auth with drizzleAdapter"
+  password_hashing:
+    algorithm: "bcrypt"
+    salt_rounds: 12
+    never_use: "Plain text, MD5, SHA-1"
+  password_requirements:
+    min_length: 8
+    required: "1 number, 1 special character (configurable per product)"
+    check_common: "Consider zxcvbn library for password strength"
+  email_verification:
+    production: "Required"
+    development: "Console log verification links OK"
+  session_cookies:
+    httpOnly: true
+    secure: "true in production"
+    sameSite: "lax or strict"
+    max_age: "30 days default (configurable)"
+
+# OWASP Top 10 Protection
+owasp_top_10:
+  broken_access_control:
+    - "Implement RBAC (role-based access control)"
+    - "Check authorization on EVERY request"
+    - "Deny by default"
+    - "Use Better-Auth session validation"
+  cryptographic_failures:
+    - "Use TLS/HTTPS in production"
+    - "Encrypt sensitive data at rest"
+    - "Never store passwords in plaintext"
+    - "Use bcrypt with 12 rounds minimum"
+  injection:
+    - "Use Drizzle ORM parameterized queries (no raw SQL unless PostGIS)"
+    - "Validate and sanitize all user input"
+    - "Use prepared statements"
+  insecure_design:
+    - "Threat modeling during architecture phase"
+    - "Defense in depth"
+    - "Document security decisions in ADRs"
+  security_misconfiguration:
+    - "Remove default credentials"
+    - "Keep dependencies updated (npm audit)"
+    - "Disable unnecessary features"
+    - "Use security headers (SvelteKit hooks)"
+  vulnerable_components:
+    - "Run npm audit regularly"
+    - "Update vulnerable packages"
+    - "Use Dependabot or Renovate"
+  authentication_failures:
+    - "Use Better-Auth built-in protections"
+    - "Rate limit auth endpoints"
+    - "Implement account lockout after failed attempts"
+  software_data_integrity:
+    - "Verify package signatures"
+    - "Use lock files (package-lock.json, bun.lockb)"
+    - "Secure CI/CD pipeline"
+  logging_monitoring:
+    - "Log security events (failed logins, permission denials)"
+    - "Never log passwords, tokens, or full API keys"
+    - "Monitor for suspicious activity"
+    - "Use structured logging with prefixes"
+  ssrf:
+    - "Validate and sanitize URLs"
+    - "Whitelist allowed domains"
+    - "Network segmentation"
+
+# Authorization
+authorization:
+  principle: "Least privilege - grant minimum permissions needed"
+  check_location: "Every request (use SvelteKit hooks or load functions)"
+  better_auth: "Use session.user.role checks"
+  api_endpoints: "Verify user has permission before processing"
+
+# Input Validation
+input_validation:
+  library: "zod (recommended for SvelteKit)"
+  validate:
+    - "Type"
+    - "Length"
+    - "Format (email, URL, etc)"
+    - "Range (min/max)"
+  location: "Server-side (+page.server.ts, +server.ts)"
+  sanitize: "DOMPurify for HTML content if needed"
+
+# XSS Prevention
+xss:
+  svelte: "Svelte auto-escapes by default"
+  dangerous: "Avoid @html unless absolutely necessary"
+  csp: "Configure Content Security Policy in hooks"
+
+# CSRF Protection
+csrf:
+  sveltekit: "SvelteKit provides built-in CSRF protection"
+  forms: "Use SvelteKit form actions (no custom CSRF tokens needed)"
+  api: "Use SameSite cookies (lax or strict)"
+
+# API Security
+api_security:
+  rate_limiting:
+    auth_endpoints: "5 attempts per 15 minutes"
+    general_api: "100 requests per 15 minutes"
+    library: "Consider @vercel/edge-rate-limit or custom implementation"
+  cors:
+    location: "SvelteKit hooks.server.ts"
+    origin: "Specific domain in production (not *)"
+    credentials: true
+  error_responses:
+    generic: "Don't expose internals ({ error: { code: 'INTERNAL_ERROR', message: 'Error occurred' } })"
+    logging: "Log detailed errors server-side only"
+
+# Secrets Management
+secrets:
+  storage: "Environment variables ($env/static/private)"
+  never_commit: ".env files in .gitignore"
+  validation: "Fail-fast if required secrets missing"
+  logging: "Never log full secrets (only prefix: key.substring(0, 7))"
+  production: "Use Vercel env vars, Railway secrets, or cloud secret managers"
+
+# Database Security
+database:
+  orm: "Drizzle with parameterized queries"
+  raw_sql: "Avoid unless PostGIS - always use parameters"
+  connections:
+    serverless: "max: 1 connection per instance"
+    traditional: "Connection pooling with max: 10"
+  migrations: "Use Drizzle migrations, never manual SQL in production"
+
+# File Upload Security (if applicable)
+file_uploads:
+  validate_type: "Magic bytes check, not just extension"
+  size_limit: "5MB default (configurable)"
+  storage: "Outside web root or cloud storage (S3, R2)"
+  filenames: "Generate random names (UUID)"
+
+# Error Handling Security
+error_handling:
+  user_facing: "Generic messages only"
+  server_logs: "Detailed error information"
+  never_expose:
+    - "Stack traces"
+    - "Database errors"
+    - "File paths"
+    - "Internal IDs or structure"
+
+# Security Headers (SvelteKit)
+security_headers:
+  location: "hooks.server.ts"
+  headers:
+    strict_transport_security: "max-age=31536000; includeSubDomains"
+    x_frame_options: "DENY"
+    x_content_type_options: "nosniff"
+    referrer_policy: "strict-origin-when-cross-origin"
+    permissions_policy: "geolocation=(), microphone=(), camera=()"
+  csp: "Configure based on app needs (default-src 'self')"
+
+# SvelteKit-Specific Security
+sveltekit_security:
+  hooks:
+    - "Use hooks.server.ts for authentication checks"
+    - "Use hooks.server.ts for security headers"
+    - "Use hooks.server.ts for rate limiting"
+  load_functions:
+    - "Validate authorization in +page.server.ts load functions"
+    - "Never expose sensitive data to client"
+  form_actions:
+    - "Validate all form inputs server-side"
+    - "Use SvelteKit's built-in CSRF protection"
+  env_variables:
+    - "Import from $env/static/private for secrets"
+    - "Never use $env/static/public for secrets"
+
+# Security Checklist
+security_checklist:
+  before_production:
+    - "All inputs validated (zod schemas)"
+    - "Passwords hashed with bcrypt (12 rounds)"
+    - "HTTPS enforced"
+    - "Security headers configured (hooks.server.ts)"
+    - "Better-Auth CSRF protection enabled"
+    - "Rate limiting on auth endpoints"
+    - "Drizzle parameterized queries (no raw SQL)"
+    - "Svelte auto-escaping (no @html unless needed)"
+    - "Authorization checks on all protected routes"
+    - "Secrets in environment variables"
+    - "Dependencies audited (npm audit fix)"
+    - "Error messages don't leak info"
+    - "Security events logged"
+  ongoing:
+    - "Weekly npm audit"
+    - "Monthly dependency updates"
+    - "Review security logs"
+    - "Test authentication flows"

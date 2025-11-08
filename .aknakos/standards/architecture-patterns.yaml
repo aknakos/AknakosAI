@@ -1,0 +1,124 @@
+# Architecture Patterns
+version: "2.0"
+updated: "2025-11-08"
+
+# Core Pattern
+core_pattern: "Feature-based layered (SvelteKit)"
+
+# SvelteKit Structure
+structure:
+  routes:
+    purpose: "Pages + API endpoints"
+    api: "routes/api/ for server endpoints"
+    versioning: "routes/api/v1/ (optional)"
+    auth: "routes/api/auth/[...auth]/ (Better-Auth catch-all)"
+    route_groups: "routes/(auth)/ for grouping without URL segment"
+  lib_server:
+    purpose: "Server-only code (tree-shaking enforced)"
+    auth: "lib/server/auth/better-auth.ts"
+    database: "lib/server/db/ (index.ts, schema/)"
+    rule: "CANNOT import in client components"
+  lib_shared:
+    purpose: "Client + Server code"
+    components: "lib/shared/components/"
+    types: "lib/shared/types/"
+    utils: "lib/shared/utils/"
+  domain_modules:
+    email: "lib/email/ (Resend integration)"
+    stripe: "lib/stripe/ (payment webhooks)"
+    config: "lib/config.ts (centralized env validation)"
+
+# Database Patterns (Drizzle ORM)
+database:
+  schema_simple: "lib/server/db/schema.ts (1 file for simple projects)"
+  schema_complex: "lib/server/db/schema/ (split by domain: auth.ts, products.ts)"
+  connection_serverless:
+    max: 1
+    idle_timeout: 20
+    max_lifetime: 1800
+    note: "For Vercel, Railway serverless"
+  connection_traditional:
+    max: 10
+    idle_timeout: 20
+    connect_timeout: 10
+    note: "For dedicated servers"
+  inline_comments: "Required - explain purpose of fields"
+  timestamps: "Use timezone-aware: timestamp('created_at', { withTimezone: true })"
+  primary_keys: "uuid().defaultRandom() or bigserial()"
+
+# Authentication Pattern (Better-Auth)
+auth:
+  library: "better-auth"
+  adapter: "drizzleAdapter(db, { provider: 'pg' })"
+  password_hashing: "bcrypt with 12 rounds"
+  email_verification: "Required for production"
+  min_password_length: 8
+  session_cookies:
+    httpOnly: true
+    secure: "process.env.NODE_ENV === 'production'"
+    sameSite: "lax or strict"
+  catch_all_route: "routes/api/auth/[...auth]/+server.ts"
+
+# API Design
+api_design:
+  error_responses:
+    validation: "{ error: { code: 'VALIDATION_ERROR', message, field? } } - 400"
+    unauthorized: "{ error: { code: 'UNAUTHORIZED', message } } - 401"
+    not_found: "{ error: { code: 'NOT_FOUND', message } } - 404"
+    internal: "{ error: { code: 'INTERNAL_ERROR', message } } - 500"
+  success_responses:
+    single: "{ data: resource }"
+    collection: "{ data: resources, total }"
+    operation: "{ success: true, message }"
+
+# Service Integration Patterns
+services:
+  email:
+    library: "resend"
+    dev_mode: "console.log verification links"
+    production: "resend.emails.send()"
+  payment:
+    library: "stripe"
+    webhooks: "Handle checkout.session.completed, payment_intent.succeeded"
+  validation: "Fail-fast if API keys missing"
+
+# Type Safety
+type_safety:
+  drizzle_types: "InferSelectModel, InferInsertModel from schema"
+  api_contracts: "Define ApiError, ApiResponse<T> interfaces"
+  strict_mode: "TypeScript strict: true"
+
+# Environment Configuration
+env_config:
+  validation: "Fail-fast on startup"
+  centralized: "lib/config.ts for complex projects"
+  inline: "const url = process.env.DATABASE_URL; if (!url) throw Error(...)"
+
+# Patterns to Avoid
+anti_patterns:
+  - "God Object - one module doing too much"
+  - "Circular Dependencies - A imports B, B imports A"
+  - "Tight Coupling - hard-coding dependencies"
+  - "Client-Side Server Code - importing lib/server/ in client components"
+
+# Architecture Decision Records (ADRs)
+adrs:
+  when: "Making architecture decisions (auth method, database, deployment)"
+  format: "Markdown with Context, Decision, Consequences, Alternatives"
+  location: "products/{name}/architecture/adr/"
+  example: "ADR-001: Use Better-Auth for Authentication"
+
+# Organization by Project Size
+project_size:
+  small:
+    features: "1-3 features"
+    organization: "Flat lib/ with domain folders"
+    schema: "schema.ts (single file)"
+  medium:
+    features: "4-10 features"
+    organization: "lib/server/ + lib/shared/"
+    schema: "schema.ts OR schema/ folder"
+  large:
+    features: "10+ features"
+    organization: "lib/server/ + lib/shared/ + route groups"
+    schema: "schema/ folder (split by domain)"

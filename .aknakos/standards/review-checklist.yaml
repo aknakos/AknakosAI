@@ -1,0 +1,197 @@
+# Review Checklist
+version: "2.0"
+updated: "2025-11-08"
+
+# Pre-Review (Author)
+pre_review:
+  - "Code compiles/runs without errors"
+  - "All tests pass (unit + integration + E2E if applicable)"
+  - "New tests written for new functionality (TDD)"
+  - "Code follows coding-conventions.yaml"
+  - "No commented-out code or debugging statements"
+  - "Dependencies justified and documented"
+  - "Self-review completed"
+  - "Svelte 5 runes used ($state, $derived, $effect)"
+
+# Functionality
+functionality:
+  - "Code does what it's supposed to do"
+  - "Edge cases handled (empty, null, boundary values)"
+  - "Error handling implemented with user-friendly messages"
+  - "Input validation present (zod schemas)"
+  - "No obvious bugs"
+
+# Testing (TDD Compliance)
+testing:
+  - "Tests written BEFORE implementation (RED phase)"
+  - "Tests cover Epic acceptance criteria"
+  - "Tests cover edge cases comprehensively"
+  - "Tests are independent (no shared state)"
+  - "Tests are clear and readable (AAA pattern)"
+  - "Mocks used appropriately (vi.mock for $app, $env, $lib)"
+  - "Test coverage meets standards (80%+ unit tests)"
+  - "Tests NOT changed during GREEN phase (or documented if exception)"
+
+# Code Quality
+code_quality:
+  readability:
+    - "Code is self-documenting"
+    - "Variable/function names are descriptive (camelCase, PascalCase, kebab-case)"
+    - "Functions are small (<50 lines)"
+    - "Comments explain WHY and reference architecture docs"
+    - "No magic numbers (use constants)"
+  maintainability:
+    - "DRY principle followed (no code duplication)"
+    - "Single responsibility per function/component"
+    - "Separation of concerns (server/ vs shared/)"
+    - "No premature optimization"
+  complexity:
+    - "Code is simple and straightforward"
+    - "No unnecessary complexity"
+    - "Business logic is clear"
+    - "Nesting levels reasonable (max 3-4 levels)"
+
+# Architecture
+architecture:
+  - "Follows feature-based layered architecture"
+  - "SvelteKit structure respected (routes/, lib/server/, lib/shared/)"
+  - "No lib/server/ imports in client components"
+  - "Drizzle ORM queries (no raw SQL unless PostGIS)"
+  - "Better-Auth patterns followed"
+  - "Environment variables validated on startup"
+  - "No circular dependencies"
+  - "Scalability considered (serverless-aware connection pooling)"
+
+# Security
+security:
+  - "Input validation implemented (zod schemas)"
+  - "Better-Auth session validation"
+  - "Authorization enforced on protected routes"
+  - "No hardcoded secrets (use $env/static/private)"
+  - "Drizzle parameterized queries (SQL injection prevention)"
+  - "Error messages don't leak info (generic errors to users)"
+  - "Passwords hashed with bcrypt (12 rounds)"
+  - "Security headers configured (hooks.server.ts)"
+  - "Structured logging (never log passwords, tokens, full API keys)"
+
+# Performance
+performance:
+  - "No obvious performance issues"
+  - "Database queries optimized (indexes on frequent queries)"
+  - "No N+1 query problems"
+  - "Resource cleanup (close connections)"
+  - "No memory leaks"
+  - "Serverless-aware (connection pooling max: 1 for Vercel)"
+
+# Documentation
+documentation:
+  - "README updated if needed"
+  - "Complex algorithms explained with comments"
+  - "TODO comments have owner: TODO(initials): Description"
+  - "Architecture decisions documented (ADRs if major)"
+  - "API endpoints documented if public"
+
+# Dependencies
+dependencies:
+  - "New dependencies justified"
+  - "No known vulnerabilities (npm audit pass)"
+  - "Dependencies up-to-date (or upgrade plan documented)"
+  - "License compatible (MIT, Apache 2.0, BSD)"
+  - "Dependency size reasonable"
+
+# Git & Version Control
+git:
+  - "Commit messages are clear and follow convention"
+  - "Commits are atomic (one logical change per commit)"
+  - "No merge conflicts"
+  - "No unnecessary files committed (.env, node_modules, etc.)"
+  - "Branch name follows convention"
+
+# Alignment (Epic/PRD/Architecture/Mission)
+alignment:
+  - "Implementation matches Epic acceptance criteria"
+  - "PRD requirements traced and satisfied (prd_references in Epic)"
+  - "No scope creep (features not in Epic)"
+  - "Mission alignment (supports product goals from mission.md)"
+  - "Architecture compliance (follows architecture.md if exists)"
+  - "Tech stack compliance (follows tech-stack.md)"
+  - "Standards compliance (coding-conventions, testing, security)"
+
+# SvelteKit-Specific Checks
+sveltekit:
+  - "Svelte 5 runes used correctly ($state, $derived, $effect)"
+  - "Load functions in +page.server.ts for server data"
+  - "Form actions use SvelteKit patterns"
+  - "No client-side server imports"
+  - "Better-Auth integration correct (routes/api/auth/[...auth]/+server.ts)"
+  - "Drizzle schema organized (single file or schema/ folder)"
+
+# Review Outcomes
+review_outcomes:
+  approve:
+    criteria:
+      - "All critical checks passed"
+      - "No blocking issues"
+      - "Minor issues noted but don't block merge"
+  approve_with_comments:
+    criteria:
+      - "Functionality works"
+      - "Minor improvements suggested"
+      - "Create follow-up tasks for improvements"
+  request_changes:
+    criteria:
+      - "Critical issues found"
+      - "Security vulnerabilities"
+      - "Tests failing"
+      - "Doesn't meet acceptance criteria"
+      - "Architecture violations"
+      - "TDD violations (tests changed during GREEN phase without justification)"
+
+# Reviewer Responsibilities
+reviewer_responsibilities:
+  - "Review within 24 hours"
+  - "Test locally if complex changes"
+  - "Understand the context (read Epic/Story/Plan)"
+  - "Check for regressions"
+  - "Verify tests actually test what they claim"
+  - "Look for edge cases author might have missed"
+  - "Check alignment with mission.md and architecture.md"
+
+# When to Escalate
+escalate_when:
+  - "Major architecture decisions needed"
+  - "Security concerns"
+  - "Performance concerns at scale"
+  - "Tech debt concerns"
+  - "Conflicts with existing patterns"
+  - "Parent documents need changes (use escalate-conflict skill)"
+
+# Comment Quality
+comment_quality:
+  do:
+    - "Be constructive and suggest alternatives"
+    - "Be specific (line numbers, file references)"
+    - "Provide examples or links to docs"
+    - "Explain why, not just what"
+  dont:
+    - "Be vague or dismissive"
+    - "Just say 'This is bad'"
+    - "Nitpick without justification"
+
+# Automated Checks (CI/CD)
+automated_checks:
+  ci_cd_runs:
+    - "Linting (eslint)"
+    - "Formatting (prettier)"
+    - "Unit tests (vitest)"
+    - "Integration tests"
+    - "E2E tests (cypress or playwright)"
+    - "Security scanning (npm audit)"
+    - "Dependency audit"
+    - "Code coverage (80%+ unit tests)"
+  focus_manual_review_on:
+    - "Business logic correctness"
+    - "Architecture alignment"
+    - "Code clarity and maintainability"
+    - "Design decisions"
+    - "Epic/PRD/Mission alignment"

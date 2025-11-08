@@ -1,0 +1,140 @@
+# Testing Standards
+version: "2.0"
+updated: "2025-11-08"
+
+# TDD Workflow (Mandatory)
+tdd_workflow:
+  red:
+    - "Write ALL tests before implementation"
+    - "Tests MUST fail initially (no code exists)"
+    - "Verify: Run tests, confirm RED state"
+  green:
+    - "Write minimum code to make tests pass"
+    - "CRITICAL: Do NOT change tests during implementation"
+    - "If tests need changes: STOP → Update plan → Update tests → Mark in workflow"
+  refactor:
+    - "Improve code quality while keeping tests passing"
+    - "Tests remain unchanged"
+
+# Test Structure (AAA Pattern)
+test_structure:
+  pattern: "Arrange → Act → Assert"
+  naming: "should {expected behavior} when {condition}"
+  grouping: "describe() blocks by feature, nested by scenario"
+  examples:
+    - "describe('Password Validation') > describe('Valid passwords') > it('should accept...')"
+    - "describe('Invalid passwords - too short') > it('should reject...')"
+    - "describe('Invalid passwords - multiple violations') > it('should reject...')"
+
+# Test Types
+test_types:
+  unit:
+    scope: "Pure functions, business logic, utilities"
+    speed: "< 10ms each"
+    dependencies: "Mock everything"
+    focus: "Comprehensive edge cases"
+    library: "vitest"
+  component:
+    scope: "Svelte components, user interactions"
+    approach: "User-centric (test behavior not implementation)"
+    actions: "Fire events, assert DOM"
+    selectors: "Accessibility-focused (getByRole, getByLabelText)"
+    library: "@testing-library/svelte"
+  api_integration:
+    scope: "SvelteKit endpoints, database operations"
+    mocks: "$env/static/private, database, external APIs"
+    verify: "Request/response handling, database interactions"
+    library: "vitest"
+  e2e:
+    scope: "Full user workflows"
+    characteristics: "Real browser, real database"
+    speed: "< 5s each"
+    coverage: "Critical flows only (auth, payment, core features)"
+    library: "cypress or playwright"
+
+# Mocking Patterns
+mocking:
+  sveltekit_navigation: "vi.mock('$app/navigation', () => ({ goto: vi.fn() }))"
+  env_variables: "vi.mock('$env/static/private', () => ({ DATABASE_URL: 'test' }))"
+  lib_modules: "vi.mock('$lib/server/db', () => ({ db: { select: vi.fn() } }))"
+  cleanup: "beforeEach(() => vi.clearAllMocks())"
+  restore: "afterEach(() => vi.restoreAllMocks())"
+
+# Test Organization
+test_organization:
+  file_structure:
+    unit: "lib/utils/validation.ts → lib/utils/validation.test.ts"
+    component: "routes/signup/+page.svelte → routes/signup/+page.test.ts"
+    api: "routes/api/waitlist/+server.ts → routes/api/waitlist/+server.test.ts"
+    e2e: "tests/e2e/registration.spec.ts"
+  naming:
+    unit: "{filename}.test.ts"
+    component: "{filename}.test.ts (co-located)"
+    api: "+server.test.ts (co-located)"
+    e2e: "{feature}.spec.ts (in tests/e2e/)"
+
+# Coverage Requirements
+coverage:
+  unit_tests: "80% line coverage"
+  api_endpoints: "100% of endpoints tested"
+  critical_flows: "100% E2E coverage (auth, payment, core)"
+  what_to_test:
+    - "Business logic"
+    - "Edge cases (empty, null, boundary values)"
+    - "Error handling"
+    - "Validation logic"
+    - "User interactions"
+  what_not_to_test:
+    - "Third-party libraries"
+    - "Framework internals (SvelteKit, Drizzle)"
+    - "Trivial getters/setters"
+
+# Vitest Configuration
+vitest_config:
+  environment: "happy-dom or jsdom"
+  globals: true
+  setup_files: "./vitest-setup.ts"
+  coverage:
+    provider: "v8"
+    reporter: ["text", "html"]
+    exclude: ["**/*.config.ts", "**/node_modules/**"]
+
+# TDD Critical Rules
+tdd_rules:
+  do:
+    - "Write tests first (RED phase)"
+    - "Verify tests fail before implementing"
+    - "Test edge cases comprehensively"
+    - "Keep tests passing after refactoring"
+  dont:
+    - "Change tests during GREEN phase"
+    - "Skip test writing"
+    - "Write implementation before tests"
+    - "Ignore failing tests"
+    - "Test implementation details (test behavior instead)"
+  exceptions: "Only change tests during RED phase, test review, or after automated review identifies issues"
+
+# Test Data Patterns
+test_data:
+  factories: "lib/test-utils/factories.ts - createUser({ overrides })"
+  fixtures: "tests/fixtures/users.json - static data for complex scenarios"
+
+# Performance Targets
+performance:
+  unit: "< 10ms each"
+  component: "< 100ms each"
+  api: "< 200ms each"
+  e2e: "< 5s each"
+  total_suite: "< 5 minutes"
+
+# CI/CD Integration
+ci_cd:
+  pre_commit: "npm run test:unit && npm run lint"
+  ci_pipeline:
+    - "npm run test"
+    - "npm run test:e2e"
+    - "npm run coverage"
+  fail_build_if:
+    - "Any test fails"
+    - "Coverage drops below 80%"
+    - "Linting errors"
