@@ -2,18 +2,58 @@
 # This file tracks the current state of your development workflow
 
 framework_version: "1.0"
-current_phase: "vision"  # vision | prd | epic_breakdown | planning_mode | tdd_tests_written | tdd_test_review | tdd_implementation | tdd_refactor | review | epic_complete
+current_phase: "vision"  # mission_created | project_brief_created | architecture_created | ux_flow_created | prd | epic_breakdown | validation_complete | planning_mode | tdd_tests_written | tdd_test_review | tdd_implementation | tdd_refactor | review | epic_complete
 
 products: {}
   # Example structure:
   # my-product:
   #   current_status: "in_progress"  # draft | in_progress | complete
   #
+  #   # Strategic Documents
+  #   mission_created: true
+  #   mission_file: "mission.md"
+  #   roadmap_file: "roadmap.md"
+  #
+  #   project_brief_created: false  # Optional, complex products only
+  #   project_brief_file: null  # or "2025-11-08-project-brief.md"
+  #
+  #   architecture_created: false  # Optional, complex products only
+  #   architecture_file: null  # or "2025-11-08-architecture.md"
+  #   tech_stack_file: "tech-stack.md"
+  #
+  #   ux_flow_created: false  # Optional, user-facing products only
+  #   ux_flow_file: null  # or "2025-11-08-ux-flow.md"
+  #
+  #   # Standards (Hybrid: product-specific > framework defaults)
+  #   standards_customized: false  # true if create-standards skill used
+  #   standards_files: []  # List of customized standards: ["security-guidelines.yaml", "testing-standards.yaml"]
+  #   standards_date: null  # "2025-11-08" when created
+  #
   #   prd:
   #     file: "2025-11-08-prd.md"
   #     status: "approved"  # draft | review | approved
   #     review_date: "2025-11-08"
   #     reviewer: "human"  # or agent name
+  #     references:  # NEW - Traceability
+  #       mission: true
+  #       project_brief: false
+  #       architecture: false
+  #
+  #   # NEW - Validation
+  #   validation:
+  #     status: "PASS"  # PASS | CONCERNS | FAIL | PENDING
+  #     file: "reviews/validation/2025-11-08-epic-validation.md"
+  #     date: "2025-11-08"
+  #     blockers: []  # List of issues if FAIL
+  #
+  #   # NEW - Conflicts
+  #   conflicts: []
+  #     # - date: "2025-11-08"
+  #     #   type: "tech_stack"  # requirements | architecture | tech_stack | mission | scope
+  #     #   severity: "critical"  # critical | high | medium | low
+  #     #   affected_docs: ["tech-stack.md", "architecture.md"]
+  #     #   status: "resolved"  # open | resolved
+  #     #   resolution_file: "reviews/conflicts/2025-11-08-conflict-tech-stack.md"
   #
   #   epics:
   #     - name: "user-authentication"
@@ -21,6 +61,10 @@ products: {}
   #       status: "review"  # drafted | planning | tdd_tests_written | tdd_test_review | tdd_implementing | tdd_refactor | review | complete
   #       implementation_complexity: 6  # 1-9 scale (1-3=trivial, 4-6=moderate, 7-9=complex)
   #       created_date: "2025-11-08"
+  #       # NEW - Traceability
+  #       prd_references: ["REQ-AUTH-001", "REQ-AUTH-002"]
+  #       architecture_references: ["Security Architecture", "OAuth Flow"]
+  #       standards_applied: ["security-guidelines", "testing-standards"]
   #
   #       tdd:
   #         plan_includes_test_specs: true
@@ -43,13 +87,45 @@ products: {}
   #         architecture: "CONCERNS"
   #         quality: "PASS"
   #         requirements: "PASS"
+  #         meta_review: "CONCERNS"  # NEW - Meta-reviewer final decision
+  #         meta_review_file: "reviews/user-authentication/2025-11-08-meta-review.md"  # NEW
   #         last_review_date: "2025-11-08"
+  #         # NEW - Alignment status from enhanced reviewers
+  #         alignment_checks:
+  #           epic_aligned: true
+  #           prd_aligned: true
+  #           mission_aligned: true
+  #           architecture_compliant: false  # Reason for CONCERNS
+  #           tech_stack_compliant: true
   #
   #       concerns:
   #         - reviewer: "architecture"
   #           issue: "Token storage pattern not aligned with OAuth best practices"
   #           severity: "medium"
   #           status: "open"  # open | addressed | waived
+  #
+  #       # NEW - Metrics tracking
+  #       metrics:
+  #         estimated_time:
+  #           planning: "2 hours"
+  #           tdd_tests: "3 hours"
+  #           tdd_implementation: "6 hours"
+  #           tdd_refactor: "2 hours"
+  #           review: "1 hour"
+  #           total: "14 hours"
+  #         actual_time:
+  #           planning: "2.5 hours"
+  #           tdd_tests: "4 hours"
+  #           tdd_implementation: "8 hours"
+  #           tdd_refactor: "1.5 hours"
+  #           review: "2 hours"
+  #           total: "18 hours"
+  #         complexity_estimated: 6
+  #         complexity_actual: 7
+  #         started: "2025-11-08T09:00:00Z"
+  #         completed: "2025-11-10T18:00:00Z"
+  #         time_accuracy: 78  # percentage
+  #         complexity_delta: 1  # actual - estimated
   #
   #       next_action: "Address architecture concerns in token storage"
   #
@@ -66,9 +142,16 @@ products: {}
   #     - "Complete planning for dashboard epic"
 
 context_strategy:
-  last_used: "planning_mode_explore"  # planning_mode_explore | context_agent | none
+  # 3-Tier Context Model
+  tier_1_always_loaded: ["mission.md", "tech-stack.md", "roadmap.md"]
+  tier_2_selective: ["prd.md", "architecture.md", "ux-flow.md", "project-brief.md"]
+  tier_3_standards: ["coding-conventions.yaml", "architecture-patterns.yaml", "testing-standards.yaml", "security-guidelines.yaml", "review-checklist.yaml"]
+  tier_3_precedence: "products/{name}/standards/ > .aknakos/standards/"
+
+  last_used: "planning_mode_explore"  # planning_mode_explore | context_fetcher | context_gatherer | none
   context_agent_threshold: "large_scope"  # small_scope | medium_scope | large_scope
   context_agent_spawn_count: 0
+  context_fetcher_uses: 0  # NEW - Track selective extraction agent uses
 
 review_settings:
   auto_trigger: true  # Automatically trigger review agents after implementation
@@ -91,3 +174,18 @@ statistics:
     pass: 0
     concerns: 0
     fail: 0
+  # NEW - Strategic document stats
+  strategic_docs:
+    missions_created: 0
+    project_briefs_created: 0
+    architectures_created: 0
+    ux_flows_created: 0
+  # NEW - Validation stats
+  validations_run: 0
+  validation_outcomes:
+    pass: 0
+    concerns: 0
+    fail: 0
+  # NEW - Conflict stats
+  conflicts_escalated: 0
+  conflicts_resolved: 0
