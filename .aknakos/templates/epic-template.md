@@ -1,9 +1,12 @@
 # Epic: {Epic Name}
 
-**Status**: Drafted | Planning | In Progress | Review | Complete
+**Status**: Backlog | Drafted | Planning | In Progress | Parked | Review | Complete
+**Priority**: P0 | P1 | P2 | P3
 **Complexity**: {1-9}
 **Created**: {YYYY-MM-DD}
 **Dependencies**: {Other Epic names, or "None"}
+**Quick Validated**: false
+**Full Validated**: false
 
 ---
 

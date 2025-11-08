@@ -55,12 +55,67 @@ products: {}
   #     #   status: "resolved"  # open | resolved
   #     #   resolution_file: "reviews/conflicts/2025-11-08-conflict-tech-stack.md"
   #
+  #   # NEW - Dynamic Work Management
+  #   epic_priorities:
+  #     P0:  # Critical - auto-switch
+  #       - "fix-auth-service"
+  #     P1:  # Urgent - offer switch
+  #       - "user-authentication"
+  #       - "password-reset-flow"
+  #     P2:  # Normal - backlog
+  #       - "dashboard-analytics"
+  #       - "user-profile-management"
+  #     P3:  # Low - backlog
+  #       - "dark-mode-toggle"
+  #       - "export-to-csv"
+  #
+  #   current_work:
+  #     epic: "fix-auth-service"
+  #     phase: "tdd_implementation"
+  #     started_at: "2025-11-08T14:00:00Z"
+  #
+  #   parked_work:
+  #     - epic: "user-authentication"
+  #       phase: "tdd_implementation"
+  #       progress:
+  #         summary: "5/8 tests passing, working on password complexity validation"
+  #         details:
+  #           tests_passing: "5/8"
+  #           tests_total: 8
+  #           last_working_on: "Password complexity validation test"
+  #       blockers: null  # or description of blockers
+  #       git_stash: "stash@{0}"  # Git stash reference for code state
+  #       parked_at: "2025-11-08T14:30:00Z"
+  #       parked_by: "park skill"
+  #       reason: "Switched to P0 work: fix-auth-service"
+  #
+  #     - epic: "dashboard-analytics"
+  #       phase: "planning"
+  #       progress:
+  #         summary: "4 stories defined, working on task breakdown"
+  #         details:
+  #           stories_defined: 4
+  #           tasks_defined: 12
+  #           last_working_on: "Data fetching task breakdown"
+  #       blockers: null
+  #       git_stash: null  # No code changes yet (planning phase)
+  #       parked_at: "2025-11-07T16:45:00Z"
+  #       parked_by: "user request"
+  #       reason: "End of session, incomplete planning"
+  #
   #   epics:
   #     - name: "user-authentication"
   #       file: "2025-11-08-user-authentication.md"
-  #       status: "review"  # drafted | planning | tdd_tests_written | tdd_test_review | tdd_implementing | tdd_refactor | review | complete
+  #       status: "parked"  # NEW: backlog | drafted | planning | tdd_tests_written | tdd_test_review | tdd_implementing | tdd_refactor | parked | review | complete
+  #       priority: "P1"  # NEW: P0 | P1 | P2 | P3
   #       implementation_complexity: 6  # 1-9 scale (1-3=trivial, 4-6=moderate, 7-9=complex)
   #       created_date: "2025-11-08"
+  #       # NEW - Validation flags
+  #       quick_validated: true  # Quick validation (mission, tech stack, complexity)
+  #       full_validated: true  # Full validation (PRD, architecture, dependencies)
+  #       quick_validation_date: "2025-11-08"
+  #       full_validation_date: "2025-11-08"
+  #       added_via: "epic-breakdown"  # epic-breakdown | add-work
   #       # NEW - Traceability
   #       prd_references: ["REQ-AUTH-001", "REQ-AUTH-002"]
   #       architecture_references: ["Security Architecture", "OAuth Flow"]
@@ -189,3 +244,12 @@ statistics:
   # NEW - Conflict stats
   conflicts_escalated: 0
   conflicts_resolved: 0
+  # NEW - Dynamic Work Management stats
+  work_parked_count: 0
+  work_resumed_count: 0
+  context_switches: 0
+  epics_by_priority:
+    P0: 0
+    P1: 0
+    P2: 0
+    P3: 0

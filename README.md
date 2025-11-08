@@ -145,6 +145,49 @@ products/                    # Your products go here
 - Mandatory for tech/architecture decisions
 - 2-3 alternatives based on complexity
 
+### ✅ Dynamic Work Management
+
+Handle interruptions and changing priorities without losing context:
+
+**When urgent work comes up**:
+```
+You: "Critical bug in auth system!"
+Claude: [Uses add-work skill]
+       Priority P0 detected. Parking current work...
+       Switching to fix-auth-bug Epic...
+```
+
+**Resume parked work**:
+```
+You: "Resume my previous work"
+Claude: [Uses resume skill]
+       Restoring: dashboard-analytics
+       Git stash applied
+       Phase: TDD Implementation (5/8 tests passing)
+       Ready to continue!
+```
+
+**See all work**:
+```
+You: "What's on my plate?"
+Claude: [Uses list-work skill]
+       Shows all Epics by priority (P0-P3)
+       Active: 1 | Parked: 2 | Backlog: 4
+```
+
+**How to trigger**:
+- **Add work**: "New work: {description}" or "{description} is urgent"
+- **Park work**: "Park this work" or "Work on something else"
+- **Resume work**: "Resume" or "Resume {epic-name}"
+- **List work**: "Show all work" or "What's on my plate?"
+
+**Features**:
+- Priority triage (P0=critical, P1=urgent, P2=normal, P3=backlog)
+- Git stash integration (code state preserved)
+- Progress tracking (tests passing, phase, notes)
+- Quick validation (2-3 min) for urgent items
+- Full validation before planning mode
+
 ---
 
 ## Documentation
@@ -158,18 +201,29 @@ products/                    # Your products go here
 
 ---
 
-## Skills (8 total)
+## Skills (14 total)
 
 Skills stay in main conversation context:
 
+**Strategic**:
 1. **elicitation**: Iterative questioning (BMAD-style deep exploration)
 2. **product-vision**: Strategic product planning
 3. **architecture**: Tech stack and pattern decisions
 4. **create-prd**: Generate formal PRD
 5. **epic-breakdown**: Break PRD into Epics
-6. **whats-next**: Show what to do next (use this frequently!)
-7. **context-scope**: Decide if Context agent needed
-8. **epic-review**: Synthesize review learnings
+
+**Dynamic Work**:
+6. **add-work**: Quick Epic capture with priority triage
+7. **park**: Save work context (git stash + progress)
+8. **resume**: Restore parked work
+9. **list-work**: View all work by priority
+10. **quick-validate**: Fast validation for urgent work (2-3 min)
+11. **promote-epic**: Move Epic through validation stages
+
+**Utility**:
+12. **whats-next**: Show what to do next (use this frequently!)
+13. **context-scope**: Decide if Context agent needed
+14. **epic-review**: Synthesize review learnings
 
 ---
 

@@ -180,6 +180,14 @@ Use `epic-review` skill to synthesize review reports, extract learnings, identif
 - `escalate-conflict`: Block-and-escalate for parent doc conflicts
 - `epic-review`: Synthesize review reports
 
+*Dynamic Work Management*:
+- `add-work`: Quick Epic capture with priority triage (P0-P3), handles interruptions
+- `park`: Save current work context (git stash + progress)
+- `resume`: Restore parked work with full context
+- `list-work`: Display all work with statuses/priorities
+- `quick-validate`: Lightweight validation (2-3 min) for urgent work
+- `promote-epic`: Move Epics through validation stages (backlog → drafted → planning)
+
 *Context Management*:
 - `context-scope`: 3-tier context strategy (Strategic/Detailed/Standards)
 - `whats-next`: Show next actions based on workflow state
@@ -194,6 +202,20 @@ Use `epic-review` skill to synthesize review reports, extract learnings, identif
 
 *Research*: `market-research`, `tech-exploration`, `epic-parallel`, `context-gatherer`, `context-fetcher` (selective Tier 2 extraction)
 *Review*: `test-reviewer`, `security-reviewer`, `architecture-reviewer`, `quality-reviewer`, `requirements-reviewer`, `meta-reviewer` (synthesizes all 5 reviews, runs after parallel reviews complete)
+
+---
+
+## Dynamic Work Management
+
+**Handle interruptions without derailing progress.**
+
+**Flow**: New work → Priority (P0-P3) → Park current (git stash + context) → Resume later
+**Lifecycle**: Backlog → Drafted (quick-validate) → Planning (full-validate) → In Progress → Parked/Complete
+
+**Priority**: P0 (auto-switch), P1 (offer switch), P2/P3 (backlog)
+**Validation**: Quick (2-3 min, mission/tech/complexity) for P0/P1, Full (10-15 min, PRD/architecture) before planning
+
+**User says**: "New work: {desc}" | "Park this" | "Resume" | "Show all work"
 
 ---
 
