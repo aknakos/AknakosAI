@@ -1,8 +1,11 @@
-# Test Reviewer Agent
+---
+name: test-reviewer
+description: Verify that tests match the original plan, weren't changed during implementation, have good coverage, and follow testing best practices. **Critical for TDD enforcement.**
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Review Agent
-**Execution**: Parallel (runs with other reviewers after TDD implementation)
-**Phase**: Phase 6 - Review
+
 
 ---
 

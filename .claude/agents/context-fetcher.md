@@ -1,3 +1,10 @@
+---
+name: context-fetcher
+description: - Need specific sections from large documents (PRD, architecture, project-brief)
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
+
 # Agent: Context Fetcher
 
 **Purpose**: Selectively extract relevant sections from large Tier 2 strategic documents

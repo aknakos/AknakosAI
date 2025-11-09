@@ -2,8 +2,9 @@ Always sacrifice grammar for the sake of conciseness and clarity. You must keep 
 
 # Aknakos Framework - AI Agent Framework for Claude Code
 
-**Version**: 1.0
+**Version**: 1.1
 **Purpose**: Hybrid framework balancing strategic depth with implementation speed, optimized for Claude Code.
+**Updated**: 2025-11-09 - Migrated to Claude Code native structure
 
 ## Core Principles
 
@@ -74,7 +75,7 @@ Always sacrifice grammar for the sake of conciseness and clarity. You must keep 
 - Use `epic-breakdown` skill
 - Each Epic: name, description, acceptance criteria, dependencies, complexity (1-9)
 - Epics include traceability frontmatter (PRD references, architecture references)
-- Save to `products/{product-name}/epics/YYYY-MM-DD-epic-name.md`
+- Save to `.aknakos/products/{product-name}/epics/YYYY-MM-DD-epic-name.md`
 - Optional: Use `epic-parallel` agent for multiple Epics simultaneously
 
 ### Phase 3.5: Alignment Validation (Quality Gate)
@@ -84,7 +85,7 @@ Always sacrifice grammar for the sake of conciseness and clarity. You must keep 
 - BMAD PO Master Validation Checklist pattern
 - Checks: Requirements coverage, Epic-PRD traceability, architecture compliance, UX alignment (if ux-flow.md exists), mission alignment
 - Output: Validation report (PASS/CONCERNS/FAIL)
-- Location: `products/{name}/reviews/validation/YYYY-MM-DD-epic-validation.md`
+- Location: `.aknakos/products/{name}/reviews/validation/YYYY-MM-DD-epic-validation.md`
 - **If FAIL**: Block progression, use `escalate-conflict` skill if parent docs need changes
 - **If PASS/CONCERNS**: Proceed to planning mode
 
@@ -104,7 +105,7 @@ Enter planning mode (Shift+Tab twice) to break Epic into Stories/Tasks/Test Spec
 - Tasks: specific code changes
 - **Test Specifications** (CRITICAL): Unit/integration/E2E tests mapped to acceptance criteria
 
-Optional: Save plan to `products/{product-name}/plans/epic-name/YYYY-MM-DD-plan.md` if complex/multi-session.
+Optional: Save plan to `.aknakos/products/{product-name}/plans/epic-name/YYYY-MM-DD-plan.md` if complex/multi-session.
 
 ### Phase 5: TDD Implementation
 
@@ -152,19 +153,19 @@ Optional: Save plan to `products/{product-name}/plans/epic-name/YYYY-MM-DD-plan.
 - Moderate (4-6): Thorough analysis, human review if CONCERNS
 - Complex (7-9): Deep audit, human review required
 
-Reports saved to `products/{product-name}/reviews/epic-name/`. Decision: PASS/CONCERNS/FAIL.
+Reports saved to `.aknakos/products/{product-name}/reviews/epic-name/`. Decision: PASS/CONCERNS/FAIL.
 
 **Meta-Review** (optional): After 5 reviews complete, spawn `meta-reviewer` agent to synthesize findings, resolve conflicts, prioritize fixes.
 
 ### Phase 7: Epic Completion
 
-Use `epic-review` skill to synthesize review reports, extract learnings, identify patterns. Save retrospective to `products/{product-name}/reviews/epic-reviews/YYYY-MM-DD-epic-name-review.md`.
+Use `epic-review` skill to synthesize review reports, extract learnings, identify patterns. Save retrospective to `.aknakos/products/{product-name}/reviews/epic-reviews/YYYY-MM-DD-epic-name-review.md`.
 
 ---
 
 ## Skills & Agents
 
-**Skills** (stay in main context): See `.aknakos/skills/` for full definitions
+**Skills** (stay in main context): See `.claude/skills/` for full definitions (Claude Code native skills)
 
 *Strategic Documents*:
 - `create-mission`: Generate mission.md + roadmap.md (Agent OS style, lightweight)
@@ -198,10 +199,10 @@ Use `epic-review` skill to synthesize review reports, extract learnings, identif
 - `compare-standards`: Show product vs framework standards differences, visualize inheritance
 - `analyze-metrics`: Track time/complexity accuracy, improve estimates from historical data
 
-**Agents** (parallel, separate contexts): See `.aknakos/agents/` for full definitions
+**Agents** (auto-loaded by Claude Code): See `.claude/agents/` for agent definitions
 
-*Research*: `market-research`, `tech-exploration`, `epic-parallel`, `context-gatherer`, `context-fetcher` (selective Tier 2 extraction)
-*Review*: `test-reviewer`, `security-reviewer`, `architecture-reviewer`, `quality-reviewer`, `requirements-reviewer`, `meta-reviewer` (synthesizes all 5 reviews, runs after parallel reviews complete)
+*Research*: `market-research`, `tech-exploration`, `epic-parallel`, `context-gatherer`, `context-fetcher`
+*Review*: `test-reviewer`, `security-reviewer`, `architecture-reviewer`, `quality-reviewer`, `requirements-reviewer`, `meta-reviewer`
 
 ---
 
@@ -279,7 +280,7 @@ See workflow.yaml file for structure example.
 - DRY principle: single source of truth
 
 **Tier 3: Standards** (Hybrid - product-specific > framework defaults):
-- **Precedence**: `products/{name}/standards/*.yaml` (if exists) > `.aknakos/standards/*.yaml`
+- **Precedence**: `.aknakos/products/{name}/standards/*.yaml` (if exists) > `.aknakos/standards/*.yaml`
 - **Files**: coding-conventions, architecture-patterns, testing-standards, security-guidelines, review-checklist (all YAML)
 - **Framework defaults**: SvelteKit + Svelte 5 + Better-Auth + Drizzle + Vitest + Cypress + Bun
 - **Product-specific**: Optional custom standards (use `create-standards` skill after mission creation)
@@ -299,20 +300,33 @@ Use `context-scope` skill to determine strategy.
 
 ```
 .aknakos/
-├── state/workflow.yaml
-├── skills/*.md
-├── agents/**/*.md
-├── templates/*.md
+└── state/workflow.yaml  # Workflow state management
+
+.claude/                 # Claude Code native structure
+├── skills/              # Auto-loaded skills (Claude Code format)
+│   ├── create-mission/SKILL.md
+│   ├── create-prd/SKILL.md
+│   ├── epic-breakdown/SKILL.md
+│   └── ...
+├── docs/                # Reference documentation
+│   └── agents/          # Agent prompts for Task tool
+│       ├── market-research.md
+│       ├── tech-exploration.md
+│       └── review/*.md
+├── templates/           # Document templates
+│   ├── mission-template.md
+│   ├── prd-template.md
+│   └── ...
 ├── standards/           # Framework default standards (YAML)
 │   ├── coding-conventions.yaml
 │   ├── architecture-patterns.yaml
 │   ├── testing-standards.yaml
 │   ├── security-guidelines.yaml
 │   └── review-checklist.yaml
-└── references/          # NEW - Reference docs
+└── references/          # Reference docs
     └── elicitation-techniques.md
 
-products/{product-name}/
+.aknakos/products/{product-name}/
 ├── mission.md                          # Lightweight vision (Agent OS)
 ├── roadmap.md                          # Development phases (Agent OS)
 ├── tech-stack.md                       # Tech choices (Agent OS)
@@ -365,8 +379,10 @@ products/{product-name}/
 
 ## Version History
 
+**v1.1** (2025-11-09): Claude Code native integration - 25 skills + 11 agents in `.claude/`, instance data in `.aknakos/`
+
 **v1.0** (2025-11-08): Initial release - Graduated complexity, TDD workflow, parallel reviews, context strategy, planning mode integration
 
 ---
 
-*For detailed definitions, see `.aknakos/skills/` and `.aknakos/agents/` directories.*
+*Skills: `.claude/skills/` | Agents: `.claude/agents/` | Framework: `.aknakos/` | Products: `.aknakos/products/`*

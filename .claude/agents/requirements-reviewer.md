@@ -1,8 +1,11 @@
-# Requirements Reviewer Agent
+---
+name: requirements-reviewer
+description: Verify that all acceptance criteria are met, requirements are traced to implementation, and Epic goals are achieved.
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Review Agent
-**Execution**: Parallel (runs with other reviewers)
-**Phase**: Phase 6 - Review
+
 
 ## Agent Purpose
 

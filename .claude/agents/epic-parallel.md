@@ -1,8 +1,11 @@
-# Epic Parallel Agent
+---
+name: epic-parallel
+description: Generate multiple Epic files simultaneously from a PRD. Accelerates Epic breakdown phase by creating several Epics in parallel rather than sequentially.
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Research/Exploration Agent
-**Execution**: Parallel (separate context)
-**Phase**: Phase 3 - Epic Breakdown
+
 
 ---
 

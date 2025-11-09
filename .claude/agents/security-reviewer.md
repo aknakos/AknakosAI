@@ -1,8 +1,11 @@
-# Security Reviewer Agent
+---
+name: security-reviewer
+description: Audit security implications of implemented code, checking for vulnerabilities, proper authentication/authorization, data protection, and security best practices.
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Review Agent  
-**Execution**: Parallel (runs with other reviewers)  
-**Phase**: Phase 6 - Review
+
 
 ## Agent Purpose
 

@@ -1,8 +1,11 @@
-# Meta-Reviewer Agent
+---
+name: meta-reviewer
+description: Synthesize findings from all 5 review agents, identify conflicts between reviewers, prioritize fixes, and generate unified action plan.
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Review Synthesis Agent
-**Execution**: Sequential (runs after 5 parallel reviewers complete)
-**Phase**: Phase 6 - Review
+
 
 ## Agent Purpose
 

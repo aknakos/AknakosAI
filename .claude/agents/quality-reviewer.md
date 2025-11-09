@@ -1,8 +1,11 @@
-# Quality Reviewer Agent
+---
+name: quality-reviewer
+description: Review code quality, maintainability, standards compliance, documentation, and testing practices.
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Review Agent
-**Execution**: Parallel (runs with other reviewers)
-**Phase**: Phase 6 - Review
+
 
 ## Agent Purpose
 

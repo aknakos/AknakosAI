@@ -83,7 +83,7 @@ CLAUDE.md                                    # Framework instruction manual (rea
     ├── prd-template.md
     └── epic-template.md
 
-products/{product-name}/
+.aknakos/products/{product-name}/
 ├── YYYY-MM-DD-prd.md                        # Formal PRD
 ├── epics/
 │   ├── YYYY-MM-DD-epic-name.md             # Lightweight Epics
@@ -126,7 +126,7 @@ products/{product-name}/
 
 **Tools**: Skill `create-prd`
 
-**Artifacts**: `products/{name}/YYYY-MM-DD-prd.md` (formal)
+**Artifacts**: `.aknakos/products/{name}/YYYY-MM-DD-prd.md` (formal)
 
 **Formality**: HIGH (this is the last heavy documentation)
 
@@ -143,7 +143,7 @@ products/{product-name}/
 - Optional Agent: `epic-parallel` (for many Epics)
 - Optional Agent: `context-gatherer` (for large codebases)
 
-**Artifacts**: `products/{name}/epics/YYYY-MM-DD-epic-name.md` (lightweight)
+**Artifacts**: `.aknakos/products/{name}/epics/YYYY-MM-DD-epic-name.md` (lightweight)
 
 **Formality**: Medium (just acceptance criteria + dependencies)
 
@@ -206,7 +206,7 @@ products/{product-name}/
 4. **quality-reviewer**: Code quality, maintainability, standards
 5. **requirements-reviewer**: All acceptance criteria met
 
-**Artifacts**: 5 review reports saved to `products/{name}/reviews/{epic}/`
+**Artifacts**: 5 review reports saved to `.aknakos/products/{name}/reviews/{epic}/`
 
 **Duration**: 15-30 minutes (parallel)
 
@@ -223,7 +223,7 @@ products/{product-name}/
 
 **Process**: Read 5 review reports, extract patterns and learnings
 
-**Artifacts**: `products/{name}/reviews/epic-reviews/YYYY-MM-DD-epic-name-review.md`
+**Artifacts**: `.aknakos/products/{name}/reviews/epic-reviews/YYYY-MM-DD-epic-name-review.md`
 
 **Duration**: 30 minutes
 

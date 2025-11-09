@@ -1,8 +1,11 @@
-# Architecture Reviewer Agent
+---
+name: architecture-reviewer
+description: Review implementation for architectural consistency, design patterns, tech debt, and alignment with established architecture decisions.
+tools: Read, Write, Bash, Glob, Grep
+model: sonnet
+---
 
-**Type**: Review Agent
-**Execution**: Parallel (runs with other reviewers)
-**Phase**: Phase 6 - Review
+
 
 ## Agent Purpose
 
