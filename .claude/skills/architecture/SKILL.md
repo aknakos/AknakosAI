@@ -1,20 +1,17 @@
 ---
 name: architecture
-description: Guide technical architecture exploration and decisions Use when: Making architectural decisions, choosing tech stack, defining patterns
+description: Guide technical architecture exploration and decisions using alternatives pattern. MANDATORY for ALL tech/architecture decisions present 2-3 alternatives using AskUserQuestion tool. Use when making architectural decisions, choosing tech stack, defining patterns.
 ---
 
+## Instructions
 
-**Purpose**: Guide technical architecture exploration and decisions
+Explore and make architectural decisions through conversational discussion. Consider multiple approaches, evaluate trade-offs, choose the right technical foundation.
 
-**Phase**: Phase 1 - Strategic Vision
+### When to Use
 
-**When to Use**: Making architectural decisions, choosing tech stack, defining patterns
+**Use**: Making architectural decisions, choosing tech stack, defining patterns
 
----
-
-## What This Skill Does
-
-This skill helps you explore and make architectural decisions through conversational discussion. It considers multiple approaches, evaluates trade-offs, and helps you choose the right technical foundation.
+**Phase**: 1 (Strategic Vision)
 
 ---
 
@@ -22,26 +19,15 @@ This skill helps you explore and make architectural decisions through conversati
 
 **CRITICAL RULE**: For EVERY tech/architecture decision, you MUST present 2-3 alternatives using `AskUserQuestion` tool.
 
-**Tech decisions include**:
-- Framework choices (React vs Vue vs Svelte)
-- Database selection (PostgreSQL vs MongoDB vs MySQL)
-- Architecture patterns (Monolith vs Microservices vs Serverless)
-- API style (REST vs GraphQL vs gRPC)
-- Authentication method (OAuth vs JWT vs Session)
-- State management (Redux vs Zustand vs Context API)
-- Hosting/infrastructure (AWS vs Vercel vs self-hosted)
+**Tech decisions include**: Framework choices (React vs Vue vs Svelte), Database selection (PostgreSQL vs MongoDB vs MySQL), Architecture patterns (Monolith vs Microservices vs Serverless), API style (REST vs GraphQL vs gRPC), Authentication method (OAuth vs JWT vs Session), State management (Redux vs Zustand vs Context API), Hosting/infrastructure (AWS vs Vercel vs self-hosted)
 
 **Process for EVERY decision**:
 1. Identify 2-3 viable options
-2. For each option, define:
-   - Description
-   - Pros/benefits
-   - Cons/drawbacks
-   - Complexity (1-9 scale)
+2. For each option: description, pros/benefits, cons/drawbacks, complexity (1-9 scale)
 3. **Use `AskUserQuestion` tool** to present alternatives
 4. Document choice with brief rationale
 
-**Example**:
+Example:
 ```
 Use AskUserQuestion to present:
 
@@ -69,91 +55,40 @@ Option C: Svelte + SvelteKit
 
 ### 1. Architecture Fundamentals
 
-**Questions to Explore**:
-- What type of application is this? (Web, mobile, desktop, API, etc.)
-- What scale do you need to support? (Users, requests, data volume)
-- What are the performance requirements?
-- What are the reliability requirements?
-- What are the security requirements?
+Questions to Explore: What type of application? (Web, mobile, desktop, API) What scale? (Users, requests, data volume) Performance requirements? Reliability requirements? Security requirements?
 
-**Output**: Architectural constraints and requirements
-
----
+Output: Architectural constraints and requirements
 
 ### 2. Tech Stack Selection
 
-**Questions to Explore**:
+Questions:
+- **Frontend** (if applicable): Framework? State management? Styling? Build tool?
+- **Backend** (if applicable): Language? Framework? API style?
+- **Database**: Type? (SQL, NoSQL, hybrid) Specific DB? ORMs/query builders?
+- **Infrastructure**: Hosting? Deployment? CI/CD?
 
-**Frontend** (if applicable):
-- Framework? (React, Vue, Svelte, etc.)
-- State management? (Redux, Zustand, Context, etc.)
-- Styling? (Tailwind, CSS-in-JS, CSS Modules, etc.)
-- Build tool? (Vite, Webpack, etc.)
-
-**Backend** (if applicable):
-- Language? (Node.js, Python, Go, Java, etc.)
-- Framework? (Express, FastAPI, Gin, Spring, etc.)
-- API style? (REST, GraphQL, gRPC, etc.)
-
-**Database**:
-- Type? (SQL, NoSQL, hybrid)
-- Specific DB? (PostgreSQL, MongoDB, Redis, etc.)
-- ORMs/query builders?
-
-**Infrastructure**:
-- Hosting? (Cloud provider, bare metal, serverless)
-- Deployment? (Docker, Kubernetes, serverless functions)
-- CI/CD? (GitHub Actions, CircleCI, etc.)
-
-**Output**: Chosen tech stack with justifications
-
----
+Output: Chosen tech stack with justifications
 
 ### 3. Architectural Patterns
 
-**Questions to Explore**:
-- Monolith or microservices? (Or modular monolith?)
-- Layered architecture? (Presentation, business, data)
-- Authentication/authorization approach?
-- Error handling patterns?
-- Logging and observability?
-- Testing strategy?
+Questions: Monolith or microservices? Layered architecture? Authentication/authorization approach? Error handling patterns? Logging and observability? Testing strategy?
 
-**Output**: Chosen patterns and conventions
-
----
+Output: Chosen patterns and conventions
 
 ### 4. Data Architecture
 
-**Questions to Explore**:
-- What are the main entities/models?
-- What are the relationships?
-- What are the access patterns?
-- What needs to be fast? What can be slow?
-- What data needs to be consistent vs eventually consistent?
-- Caching strategy?
+Questions: Main entities/models? Relationships? Access patterns? What needs to be fast vs slow? Consistency requirements? Caching strategy?
 
-**Output**: Data model and access patterns
-
----
+Output: Data model and access patterns
 
 ### 5. Trade-off Analysis
 
 For each significant decision, consider:
+- **Performance vs Simplicity**: Optimize now or later? Caching everywhere or keep it simple?
+- **Flexibility vs Convention**: Flexible architecture or opinionated? Many options or one way?
+- **Scale vs Cost**: Build for current scale or future scale? Premium infrastructure or start simple?
 
-**Performance vs Simplicity**:
-- Optimize now or later?
-- Caching everywhere or keep it simple?
-
-**Flexibility vs Convention**:
-- Flexible architecture or opinionated?
-- Many options or one way to do things?
-
-**Scale vs Cost**:
-- Build for current scale or future scale?
-- Premium infrastructure or start simple?
-
-**Output**: Documented trade-offs and chosen direction
+Output: Documented trade-offs and chosen direction
 
 ---
 
@@ -161,7 +96,7 @@ For each significant decision, consider:
 
 **When to use**: When you need detailed technical comparison of alternatives
 
-**Recommended**: Use `tech-exploration` agent for deep, parallel comparison of tech options:
+**Recommended**: Use `tech-exploration` agent for deep, parallel comparison:
 
 ```
 Spawn tech-exploration agent to compare:
@@ -170,11 +105,7 @@ Spawn tech-exploration agent to compare:
 - PostgreSQL vs MongoDB for this use case
 ```
 
-**Benefits**:
-- Agent explores options in parallel (separate context)
-- Returns detailed comparison matrix
-- Saves main context from exploration overhead
-- Provides objective analysis
+**Benefits**: Agent explores options in parallel (separate context), returns detailed comparison matrix, saves main context from exploration overhead, provides objective analysis
 
 **Then**: Use `AskUserQuestion` to present findings and get user decision
 
@@ -199,10 +130,7 @@ For significant decisions, consider documenting:
 
 **Context**: Need reliable, structured data storage for user accounts and transactions
 
-**Options Considered**:
-- PostgreSQL (chosen)
-- MongoDB
-- MySQL
+**Options Considered**: PostgreSQL (chosen), MongoDB, MySQL
 
 **Decision**: PostgreSQL
 
@@ -229,37 +157,7 @@ Architecture decisions should inform the PRD:
 
 ---
 
-## Artifacts Created
-
-**During Skill**: Conversational exploration (in-context)
-
-**After Skill**: Optionally document:
-- Architecture summary
-- Tech stack decisions
-- Key patterns and conventions
-- Architecture Decision Records (ADRs)
-
-**Storage**: Can be referenced in PRD or stored separately
-
----
-
-## Example Usage
-
-```
-User: Let's use the architecture skill to explore tech stack options
-
-Claude: Great! Let's explore the architecture for your product.
-
-Based on your product vision, I understand you're building [summary].
-Let's start with some fundamental questions:
-
-1. What type of application is this primarily?
-[Conversational exploration begins...]
-```
-
----
-
-## Tips for Success
+## Tips
 
 - Don't choose tech based on hype - choose based on fit
 - Consider your team's expertise (learning curve matters)

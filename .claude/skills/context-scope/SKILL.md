@@ -1,50 +1,31 @@
 ---
 name: context-scope
-description: Determine optimal context gathering strategy with tier-based approach Use when: When unsure which context loading strategy to use
+description: Determine optimal context gathering strategy using 3-tier hierarchy (Strategic/Detailed/Standards). Recommends @-mentions, planning mode tools, context-fetcher agent, or context-gatherer agent based on scope assessment. Use before planning mode or Epic breakdown when unsure which context loading strategy to use.
 ---
 
+## Instructions
 
-**Purpose**: Determine optimal context gathering strategy with tier-based approach
+Analyze context needs using 3-tier hierarchy and recommend whether to load Tier 1 (Strategic) always, selectively load Tier 2 (Detailed) via @-mentions or context-fetcher, auto-apply Tier 3 (Standards), or spawn Context agent for large-scale exploration.
 
-**Phase**: Before Planning Mode or Epic Breakdown
+### When to Use
 
-**When to Use**: When unsure which context loading strategy to use
+**Use**: Before planning mode or Epic breakdown when unsure which context loading strategy to use
 
----
-
-## What This Skill Does
-
-This skill analyzes your context needs using a **3-tier hierarchy** and recommends whether to:
-1. Load Tier 1 (Strategic) context - Always required
-2. Selectively load Tier 2 (Detailed) context - Use @-mentions or context-fetcher
-3. Auto-apply Tier 3 (Standards) context - Reference standards as needed
-4. Use planning mode's built-in tools vs spawn Context agent
-
-**Why This Matters**: Context hierarchy ensures lower-level work aligns with higher-level strategic decisions while optimizing token usage.
+**Don't Use**: Clear simple scope (just read the file directly)
 
 ---
 
 ## Context Hierarchy (3-Tier Model)
 
-Based on BMAD + Agent OS patterns:
+Based on BMAD + Agent OS patterns.
 
 ### Tier 1: Strategic Context (Always Load)
 
-**Documents**:
-- `mission.md` - Product vision, purpose, goals
-- `tech-stack.md` - Technology choices and rationale
-- `roadmap.md` - Development phases and priorities
+**Documents**: mission.md (vision, goals), tech-stack.md (technology choices), roadmap.md (phases, priorities)
 
-**Characteristics**:
-- Lightweight (1 page each)
-- Foundational product context
-- Always relevant to any work
-- High-level guidance
+**Characteristics**: Lightweight (1 page each), foundational product context, always relevant, high-level guidance
 
-**When to Load**:
-- Always load in planning mode
-- Always reference during Epic/Story work
-- Always check during implementation
+**When to Load**: Always in planning mode, always during Epic/Story work, always during implementation
 
 **How to Load**:
 ```
@@ -57,34 +38,22 @@ Based on BMAD + Agent OS patterns:
 
 ### Tier 2: Detailed Context (Selective Loading)
 
-**Documents**:
-- `project-brief.md` - Market analysis, user personas, competitive landscape (5-8 pages)
-- `architecture.md` - System architecture, schemas, API design (5-10 pages)
-- `ux-flow.md` - User flows, interface structure, interaction patterns (3-8 pages)
-- `prd.md` - Formal requirements with SHALL/MUST language
+**Documents**: project-brief.md (5-8 pages: market, personas, competitive), architecture.md (5-10 pages: system, schemas, API), ux-flow.md (3-8 pages: flows, interface, interactions), prd.md (formal requirements SHALL/MUST)
 
-**Characteristics**:
-- Detailed, comprehensive
-- Larger documents (3-25 pages)
-- Not always fully relevant
-- Contains specific decisions and rationale
+**Characteristics**: Detailed comprehensive, larger documents (3-25 pages), not always fully relevant, specific decisions and rationale
 
-**When to Load**:
-- During planning mode: Load relevant sections via @-mentions
-- During Epic breakdown: Load PRD sections for specific Epic
-- During architecture decisions: Load architecture.md relevant sections
-- During UI/UX work: Load ux-flow.md for user flows and interaction patterns
+**When to Load**: During planning mode (relevant sections via @-mentions), Epic breakdown (PRD sections), architecture decisions (architecture.md sections), UI/UX work (ux-flow.md)
 
 **How to Load**:
 
-**Option A - @-mentions (Small Scope)**:
+**Option A - @-mentions** (Small Scope):
 ```
 @.aknakos/products/{name}/prd.md#user-authentication
 @.aknakos/products/{name}/architecture.md#database-schema
 @.aknakos/products/{name}/ux-flow.md#primary-user-flow
 ```
 
-**Option B - context-fetcher Agent (Large Scope)**:
+**Option B - context-fetcher Agent** (Large Scope):
 ```
 Spawn context-fetcher agent to extract relevant sections from:
 - prd.md: User authentication requirements
@@ -97,95 +66,20 @@ Spawn context-fetcher agent to extract relevant sections from:
 
 ### Tier 3: Standards Context (Auto-Apply)
 
-**Precedence** (Hybrid approach):
+**Precedence** (Hybrid):
 1. **Product-specific** (if exists): `.aknakos/products/{name}/standards/*.yaml`
 2. **Framework defaults**: `.aknakos/standards/*.yaml`
 
-**Documents**:
-- `coding-conventions.yaml` - Code style, naming, patterns
-- `architecture-patterns.yaml` - Common patterns to use/avoid
-- `testing-standards.yaml` - Test structure, coverage requirements
-- `security-guidelines.yaml` - Security best practices
-- `review-checklist.yaml` - Standard review criteria
+**Documents**: coding-conventions.yaml, architecture-patterns.yaml, testing-standards.yaml, security-guidelines.yaml, review-checklist.yaml
 
-**Characteristics**:
-- Framework defaults: SvelteKit + Svelte 5 + Better-Auth + Drizzle
-- Product-specific overrides: Custom tech stack, stricter security, team conventions
-- Apply across product (product-specific) or all products (framework defaults)
-- Referenced automatically during implementation and review
+**Characteristics**: Framework defaults (SvelteKit + Svelte 5 + Better-Auth + Drizzle), product-specific overrides (custom tech, stricter security, team conventions), referenced automatically during implementation and review
 
-**When to Load**:
-- Planning mode: Reference testing-standards.yaml for test specs
-- Implementation: Apply coding-conventions.yaml
-- Review: Check against all standards
-- Architecture decisions: Reference architecture-patterns.yaml, security-guidelines.yaml
+**When to Load**: Planning mode (testing-standards.yaml for test specs), Implementation (coding-conventions.yaml), Review (all standards), Architecture decisions (architecture-patterns.yaml, security-guidelines.yaml)
 
 **How to Check Precedence**:
 1. Check if `.aknakos/products/{name}/standards/{standard}.yaml` exists
 2. If YES: Use product-specific standard
 3. If NO: Use framework default `.aknakos/standards/{standard}.yaml`
-
-**How to Load**:
-```
-@.aknakos/standards/testing-standards.yaml (when writing test specs)
-# OR if product-specific exists:
-@.aknakos/products/{name}/standards/testing-standards.yaml
-@.aknakos/standards/security-guidelines.yaml (when designing auth)
-```
-
----
-
-## Context Loading Strategy by Work Type
-
-### Working on Epic Breakdown
-
-**Load**:
-- **Tier 1**: mission.md, roadmap.md, tech-stack.md (always)
-- **Tier 2**: prd.md (full document or relevant sections)
-- **Tier 3**: Not needed yet
-
-**Rationale**: Need full product context + requirements to create realistic Epics
-
----
-
-### Working in Planning Mode (Story/Task Creation)
-
-**Load**:
-- **Tier 1**: mission.md, tech-stack.md (always)
-- **Tier 2**:
-  - Current Epic file (always)
-  - @-mention relevant PRD sections (specific requirements)
-  - @-mention relevant architecture patterns (if novel architecture)
-- **Tier 3**: testing-standards.yaml (for test specs)
-
-**Rationale**: Need Epic context + specific requirements + testing guidance
-
----
-
-### Working on Implementation
-
-**Context already in plan** (from planning mode output):
-- Plan contains distilled context
-- No additional loading needed
-- Self-contained
-
-**If context missing**:
-- Re-enter planning mode
-- Load Tier 1 + relevant Tier 2 sections
-- Update plan
-
----
-
-### Working on Architecture Decisions
-
-**Load**:
-- **Tier 1**: mission.md, roadmap.md (always)
-- **Tier 2**:
-  - project-brief.md (user needs, scale requirements)
-  - architecture.md (existing architecture if modifying)
-- **Tier 3**: architecture-patterns.yaml, security-guidelines.yaml
-
-**Rationale**: Need product vision + user context + existing architecture + standards
 
 ---
 
@@ -193,113 +87,35 @@ Spawn context-fetcher agent to extract relevant sections from:
 
 ### Option 1: Planning Mode Built-in Tools
 
-**Use When**:
-- Single file or component
-- Small scope (2-5 files)
-- Well-defined search (you know what to look for)
-- New/small codebase
+**Use When**: Single file or component (1 file), small scope (2-5 files), well-defined search (know what to look for), new/small codebase
 
-**Tools Available in Planning Mode**:
-- **@-mentions**: Reference specific files directly
-- **Read**: View file contents
-- **Glob**: Find files by pattern
-- **Grep**: Search file contents
-- **Explore subagent**: Fast, specialized codebase search (Haiku-powered)
+**Tools Available**: @-mentions (reference specific files), Read (view file contents), Glob (find files by pattern), Grep (search file contents), Explore subagent (fast specialized codebase search, Haiku-powered)
 
-**Benefits**:
-- No additional token cost
-- Immediate availability
-- Context stays in main conversation
-- Perfect for focused exploration
-
-**Example**:
-```
-"I need to understand the auth system"
-
-→ Use planning mode:
-   - Read src/auth/*.ts files
-   - Grep for "authentication" patterns
-   - Explore subagent: Search for "auth middleware"
-```
+**Benefits**: No additional token cost, immediate availability, context stays in main conversation, perfect for focused exploration
 
 ---
 
 ### Option 2: context-fetcher Agent (Selective Context Extraction)
 
-**New Agent**: `.aknakos/agents/context-fetcher.md`
+**Use When**: Need specific sections from large Tier 2 documents, multiple Tier 2 documents to extract from, want to avoid loading full 10-25 page documents, need focused context summary
 
-**Use When**:
-- Need specific sections from large Tier 2 documents
-- Multiple Tier 2 documents to extract from
-- Want to avoid loading full 10-25 page documents
-- Need focused context summary
+**How It Works** (Agent OS pattern): Specialized agent extracts ONLY relevant sections, conditional loading ("only if not already in context"), returns focused summary instead of full documents, prevents token bloat
 
-**How It Works** (Agent OS pattern):
-- Specialized agent extracts ONLY relevant sections
-- Conditional loading: "only if not already in context"
-- Returns focused summary instead of full documents
-- Prevents token bloat from large docs
+**Benefits**: Token-efficient (extracts vs full load), DRY principle (single source of truth), avoids redundant context
 
-**Example**:
-```
-Spawn context-fetcher agent:
-
-Extract from Tier 2 documents:
-- prd.md: User authentication requirements (REQ-AUTH-*)
-- architecture.md: Security architecture section
-- project-brief.md: Security requirements from competitive analysis
-
-Return focused summary of auth-related context.
-```
-
-**Benefits**:
-- Token-efficient (extracts vs full load)
-- DRY principle (single source of truth)
-- Avoids redundant context
-
-**Trade-offs**:
-- Additional step (spawn, wait, review)
-- Risk of missing context if extraction too narrow
+**Trade-offs**: Additional step (spawn, wait, review), risk of missing context if extraction too narrow
 
 ---
 
-### Option 3: Context Agent (Large-Scale Codebase Exploration)
+### Option 3: context-gatherer Agent (Large-Scale Codebase Exploration)
 
-**Use When**:
-- Large codebase (100+ files)
-- Multi-domain context (frontend + backend + database)
-- Architecture-wide understanding needed
-- Unfamiliar with codebase structure
-- Need comprehensive mapping
+**Use When**: Large codebase (100+ files), multi-domain context (frontend + backend + database), architecture-wide understanding needed, unfamiliar with codebase structure, need comprehensive mapping
 
-**How Context Agent Works**:
-- Runs in separate context (doesn't bloat main conversation)
-- Explores thoroughly (multiple domains, dependencies, patterns)
-- Returns summary report (token-efficient)
-- Can run in parallel while you work on something else
+**How It Works**: Runs in separate context (doesn't bloat main conversation), explores thoroughly (multiple domains, dependencies, patterns), returns summary report (token-efficient), can run in parallel while you work
 
-**Benefits**:
-- Thorough exploration without main context bloat
-- Handles complexity well
-- Returns structured summary
-- Can explore multiple domains simultaneously
+**Benefits**: Thorough exploration without main context bloat, handles complexity well, returns structured summary, can explore multiple domains simultaneously
 
-**Trade-offs**:
-- Additional step (spawn, wait, review results)
-- Uses tokens in separate context
-- Overkill for simple needs
-
-**Example**:
-```
-"I need to understand how the entire auth system integrates with
-payment processing, user management, and the frontend"
-
-→ Spawn Context agent:
-   - Maps auth flow across all layers
-   - Identifies integration points
-   - Documents patterns and dependencies
-   - Returns comprehensive summary
-```
+**Trade-offs**: Additional step (spawn, wait, review results), uses tokens in separate context, overkill for simple needs
 
 ---
 
@@ -307,46 +123,28 @@ payment processing, user management, and the frontend"
 
 ### Step 1: Define What You Need
 
-**Questions**:
-- What do you need to understand?
-- Why do you need this context?
-- How many domains are involved?
-- How familiar are you with this codebase?
-
----
+Questions: What do you need to understand? Why do you need this context? How many domains are involved? How familiar are you with this codebase?
 
 ### Step 2: Scope Assessment
 
-**Small Scope**:
-- Single file or component: @-mention it
-- Specific function/class: Grep or Read
-- Known location: Direct file access
+**Small Scope**: Single file/component (@-mention), specific function/class (Grep or Read), known location (direct file access)
 
-**Medium Scope**:
-- Several related files (2-10): Planning mode Explore
-- One domain (just frontend or just backend): Grep + Glob
-- Specific pattern search: Planning mode tools sufficient
+**Medium Scope**: Several related files 2-10 (planning mode Explore), one domain just frontend or backend (Grep + Glob), specific pattern search (planning mode tools)
 
-**Large Scope**:
-- Many files (10+): Consider Context agent
-- Multiple domains: Likely need Context agent
-- Architecture-wide understanding: Context agent recommended
-- Unknown territory: Context agent helps map it
-
----
+**Large Scope**: Many files 10+ (consider Context agent), multiple domains (likely need Context agent), architecture-wide understanding (Context agent recommended), unknown territory (Context agent helps map it)
 
 ### Step 3: Recommendation
 
 Based on analysis, recommend:
 
-**Tier 1: @-Mentions** (< 5 known files)
+**Tier 1: @-Mentions** (< 5 known files):
 ```
 Use @-mentions in planning mode:
 @src/auth/login.ts
 @src/auth/middleware.ts
 ```
 
-**Tier 2: Planning Mode Tools** (5-10 files or pattern search)
+**Tier 2: Planning Mode Tools** (5-10 files or pattern search):
 ```
 Use planning mode:
 - Glob: src/**/*auth*.ts
@@ -354,7 +152,7 @@ Use planning mode:
 - Explore: Search for "JWT token" patterns
 ```
 
-**Tier 3: context-fetcher Agent** (Selective Tier 2 extraction)
+**Tier 3: context-fetcher Agent** (Selective Tier 2 extraction):
 ```
 Spawn context-fetcher agent:
 - Extract user authentication requirements from prd.md
@@ -362,7 +160,7 @@ Spawn context-fetcher agent:
 - Return focused summary
 ```
 
-**Tier 4: context-gatherer Agent** (Large codebase exploration)
+**Tier 4: context-gatherer Agent** (Large codebase exploration):
 ```
 Spawn context-gatherer agent:
 - Analyze entire auth system across frontend, backend, database
@@ -370,109 +168,7 @@ Spawn context-gatherer agent:
 - Document patterns and dependencies
 ```
 
----
-
-## Context Agent Workflow
-
-If Context agent recommended:
-
-### 1. Spawn Agent
-
-```
-Spawn context-gatherer agent to map the authentication system:
-- Include frontend auth components
-- Include backend auth middleware and routes
-- Include database schema for users/sessions
-- Document how auth integrates with other systems
-```
-
-### 2. Wait for Results
-
-Agent explores in separate context and returns summary report
-
-### 3. Review Summary
-
-Agent provides:
-- Architecture overview
-- Key files and their purposes
-- Integration points
-- Patterns used
-- Dependencies
-- Recommendations
-
-### 4. Use Context
-
-Apply summary context to your work:
-- Enter planning mode with summary in mind
-- Reference specific files mentioned in summary
-- Follow patterns identified
-
----
-
-## Examples
-
-### Example 1: Small Scope
-
-**Situation**: "I need to modify the login function"
-
-**Analysis**:
-- Single file/function
-- Specific location
-- Well-defined task
-
-**Recommendation**:
-```
-Use @-mention in planning mode:
-@src/auth/login.ts
-
-Or simply Read the file if you know where it is.
-```
-
----
-
-### Example 2: Medium Scope
-
-**Situation**: "I need to understand how authentication works"
-
-**Analysis**:
-- Several related files (auth module)
-- One domain (backend auth)
-- Pattern search helpful
-
-**Recommendation**:
-```
-Use planning mode tools:
-1. Glob: src/auth/**/*.ts (find all auth files)
-2. Grep: "authentication" (find usage patterns)
-3. Explore: Search for "auth middleware" and "session management"
-4. Read key files identified
-```
-
----
-
-### Example 3: Large Scope
-
-**Situation**: "I need to understand how authentication integrates with the entire system including frontend, payments, and user management"
-
-**Analysis**:
-- Many files across multiple domains
-- Architecture-wide understanding
-- Complex integration points
-- Unfamiliar with structure
-
-**Recommendation**:
-```
-Spawn context-gatherer agent:
-
-Scope: "Map authentication system across entire application:
-- Frontend: Auth components, login flows, session handling
-- Backend: Auth middleware, routes, session management
-- Database: User schema, session storage
-- Integrations: How auth connects to payments, user management
-- Patterns: Auth patterns used throughout codebase"
-
-Agent will explore thoroughly and return comprehensive summary.
-```
+See `.aknakos/examples/context-scope/context-strategy-examples.md` for detailed examples.
 
 ---
 
@@ -500,89 +196,17 @@ After spawning Context agent once:
 
 ---
 
-## Common Patterns
-
-| Situation | Context Strategy |
-|-----------|------------------|
-| Epic breakdown | Tier 1 (always) + Tier 2 (prd.md full) |
-| Planning mode | Tier 1 + Epic + @-mention PRD sections + Tier 3 (testing standards) |
-| Implementation | Context in plan (self-contained) |
-| Architecture decisions | Tier 1 + Tier 2 (project-brief, architecture) + Tier 3 (patterns, security) |
-| Need PRD sections | @-mention specific sections OR context-fetcher agent |
-| Need architecture sections | @-mention specific sections OR context-fetcher agent |
-| Modify specific file | @-mention or Read |
-| Understand subsystem | Planning mode Explore |
-| Large codebase exploration | context-gatherer agent |
-| Quick lookup | Planning mode |
-
----
-
-## Integration with Workflow
-
-**Epic Breakdown Phase**:
-- Use this skill before breaking PRD into Epics
-- Helps understand existing code structure
-- Informs realistic Epic scoping
-
-**Planning Mode Phase**:
-- Use this skill before entering planning mode
-- Determines if you need context first
-- Prevents getting stuck mid-planning
-
-**Architecture Phase**:
-- May need Context agent for existing codebase
-- Understand current architecture before designing changes
-
----
-
-## Example Usage
-
-```
-User: Should I use a Context agent to understand the auth system?
-
-Claude: Let me analyze your context needs using the context-scope skill.
-
-What do you need to understand about the auth system, and why?
-
-[User explains]
-
-Based on your needs:
-- Scope: Medium (several auth files, one domain)
-- Familiarity: Moderate (you know where auth code lives)
-- Goal: Modify login flow
-
-Recommendation: Planning mode tools sufficient
-
-Here's how:
-1. Enter planning mode (Shift+Tab twice)
-2. Glob: src/auth/**/*.ts (find all auth files)
-3. Read: src/auth/login.ts (start with login)
-4. Grep: "login" (find usage patterns)
-5. Explore: Search for "auth middleware"
-
-This should give you the context you need without spawning a Context agent.
-```
-
----
-
 ## When in Doubt
 
-**Default to planning mode tools first**:
-- Faster
-- Cheaper (token-wise)
-- Sufficient for most cases
+**Default to planning mode tools first**: Faster, cheaper (token-wise), sufficient for most cases
 
-**Escalate to Context agent if**:
-- Planning mode exploration feels overwhelming
-- You're lost in complexity
-- Need multi-domain understanding
-- Codebase is very large
+**Escalate to Context agent if**: Planning mode exploration feels overwhelming, you're lost in complexity, need multi-domain understanding, codebase is very large
 
 ---
 
 ## Related Skills
 
-- **whats-next**: Check what phase you're in
-- **epic-breakdown**: Uses context to create realistic Epics
+- `whats-next`: Check what phase you're in
+- `epic-breakdown`: Uses context to create realistic Epics
 - Planning mode: Built-in exploration tools
-- Context agent: Large-scale context gathering
+- Context agents: Large-scale context gathering

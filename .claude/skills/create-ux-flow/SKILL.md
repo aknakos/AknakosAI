@@ -1,239 +1,99 @@
 ---
 name: create-ux-flow
-description: Create user experience flow specification through conversational UX design exploration. Use when: - **Optional**: For user-facing products (Complexity 4-9) OR significant UI/UX complexity
+description: Create user experience flow specification through conversational UX design exploration. Generate UX flow document (3-8 pages) defining user journeys, interface structure, interaction patterns, design principles. Use for user-facing products (Complexity 4-9) with significant UI/UX needs.
 ---
 
+## Instructions
 
-Create user experience flow specification through conversational UX design exploration.
+Generate UX flow document through conversational user-centered design exploration.
 
-## Purpose
+### When to Use
 
-Generate UX flow document (3-8 pages) defining user journeys, interface structure, interaction patterns, and design principles.
+**Use**: User-facing products (Complexity 4-9), significant UI/UX complexity
 
-## When to Use
+**Prerequisites**: mission.md + tech-stack.md exist; architecture.md helpful
 
-- **Optional**: For user-facing products (Complexity 4-9) OR significant UI/UX complexity
-- **Required**: mission.md + tech-stack.md should exist; architecture.md helpful
-- **Time**: 15-25 min UX conversation
-- **Output**: ux-flow.md (3-8 pages)
-- **Phase**: 1d (after architecture, before PRD)
+**Time**: 15-25 min UX conversation
 
-## Role & Persona
+**Output**: ux-flow.md (3-8 pages)
 
-You are a **pragmatic UX designer** focused on user-centered design.
+**Phase**: 1d (after architecture, before PRD)
 
-**Approach**:
+### Role
+
+**Pragmatic UX designer** focused on user-centered design:
 - User needs drive interface decisions
 - Simple, intuitive, accessible design
 - Design system consistency
 - Mobile-first when appropriate
-- Validate assumptions with user flows
-
-**Communication Style**:
-- Visual thinker (describe layouts, flows)
-- User-centric language
-- Practical over theoretical
-- Consider accessibility from start
 - Connect UX to product goals
 
-## Prerequisites
+### Context to Load
 
-**Context to load**:
 ```
-@.aknakos/products/{name}/mission.md
-@.aknakos/products/{name}/tech-stack.md
-@.aknakos/products/{name}/YYYY-MM-DD-architecture.md (if exists)
-@.aknakos/products/{name}/YYYY-MM-DD-project-brief.md (if exists)
+.aknakos/products/{name}/mission.md
+.aknakos/products/{name}/tech-stack.md
+.aknakos/products/{name}/YYYY-MM-DD-architecture.md (if exists)
+.aknakos/products/{name}/YYYY-MM-DD-project-brief.md (if exists)
 ```
 
-## Conversation Flow
+### Conversation Flow (7 Phases)
 
-### Phase 1: User Context (3-5 min)
+**Phase 1: User Context** (3-5 min)
+1. "Who are your primary users?" (personas, technical proficiency, devices, context of use)
+2. "What are the 2-3 most critical user goals?" (what users need, frequency, time constraints, success metrics)
+3. "What's the expected user journey?" (entry point, first-time vs returning, workflow, completion)
 
-1. **"Who are your primary users?"**
-   - User personas/roles
-   - Technical proficiency
-   - Device preferences (desktop, mobile, both)
-   - Context of use (office, on-go, home)
+**Phase 2: Core User Flows** (8-10 min)
+4. "Walk me through the primary user flow step-by-step." (For each flow: entry point, steps, decision points, success state, error scenarios)
+5. "Are there secondary flows users might take?" (alternative paths, edge cases, admin flows, error recovery)
+6. "What feedback should users get at each step?" (loading indicators, success/error messages, progress, empty states)
 
-2. **"What are the 2-3 most critical user goals?"**
-   - What users need to accomplish
-   - Frequency of use
-   - Time constraints
-   - Success metrics
+**Phase 3: Interface Structure** (5-7 min)
+7. "How should information be organized?" (page hierarchy, navigation structure, content grouping, mobile approach)
+8. "What's on the home/landing page?" (hero section, key actions/CTAs, navigation, content preview)
+9. "What are the key screens/pages?" (For each: purpose, key content, primary actions, navigation to/from)
+10. "How should users navigate between sections?" (primary navigation visibility, secondary navigation, mobile considerations, deep linking)
 
-3. **"What's the expected user journey?"**
-   - Entry point (how users arrive)
-   - First-time vs returning users
-   - Typical workflow
-   - Exit/completion
+**Phase 4: Interaction Patterns** (4-6 min)
+11. "How should forms work?" (validation: real-time/on-submit, error display: inline/summary, multi-step vs single page, auto-save)
+12. "How should data be displayed?" (lists: table/cards/grid, filtering, sorting, pagination vs infinite scroll, default view, empty states)
+13. "What feedback patterns do you want?" (toast notifications, modal confirmations, inline messages, loading skeletons vs spinners, undo capability)
+14. "Any complex interactions?" (drag & drop, inline editing, keyboard shortcuts, bulk actions)
 
-### Phase 2: Core User Flows (8-10 min)
+**Phase 5: Design System & Components** (3-4 min)
+15. "Are you using an existing design system?" (Material Design, Ant Design, custom; component library choice; alignment with tech stack)
+16. "What's your design philosophy?" (minimal vs feature-rich, playful vs professional, colorful vs neutral, dense vs spacious)
+17. "What core components do you need?" (buttons, forms, feedback, navigation, data display)
 
-4. **"Walk me through the primary user flow step-by-step."**
+**Phase 6: Accessibility & Responsive Design** (2-3 min)
+18. "What accessibility level are you targeting?" (WCAG A/AA/AAA, keyboard navigation, screen reader support, color contrast)
+19. "What devices need support?" (desktop only, mobile-first, both; breakpoints; touch vs mouse; responsive patterns)
+20. "Any specific accessibility considerations?" (high contrast mode, reduced motion, large text support, focus indicators)
 
-For each flow, capture:
-- **Entry point**: Where user starts
-- **Steps**: Each action and system response
-- **Decision points**: User choices/branches
-- **Success state**: What completion looks like
-- **Error scenarios**: What can go wrong, how handled
+**Phase 7: UX Principles** (2-3 min)
+21. "What are your top 3 UX principles for this product?" (Examples: Simplicity, Speed, Clarity, Delight, Accessibility, Consistency)
+22. "How does this UX support your mission?" (Connect UX decisions to mission.md goals)
 
-**Example questions**:
-- "What happens if authentication fails?"
-- "How does a new user discover this feature?"
-- "What if the user wants to undo?"
-- "How do you handle loading states?"
+### Document Generation
 
-5. **"Are there secondary flows users might take?"**
-   - Alternative paths
-   - Edge cases
-   - Admin/power user flows
-   - Error recovery flows
-
-6. **"What feedback should users get at each step?"**
-   - Loading indicators
-   - Success messages
-   - Error messages
-   - Progress indicators
-   - Empty states
-
-### Phase 3: Interface Structure (5-7 min)
-
-7. **"How should information be organized?"**
-   - Page hierarchy
-   - Navigation structure (top nav, sidebar, tabs)
-   - Content grouping
-   - Mobile navigation approach
-
-8. **"What's on the home/landing page?"**
-   - Hero section
-   - Key actions (CTAs)
-   - Navigation
-   - Content preview
-
-9. **"What are the key screens/pages?"**
-
-For each main page, discuss:
-- Purpose
-- Key content
-- Primary actions
-- Navigation to/from
-
-10. **"How should users navigate between sections?"**
-    - Primary navigation (always visible?)
-    - Secondary navigation (breadcrumbs, in-page)
-    - Mobile considerations
-    - Deep linking needs
-
-### Phase 4: Interaction Patterns (4-6 min)
-
-11. **"How should forms work?"**
-    - Validation (real-time, on-submit)
-    - Error display (inline, summary)
-    - Multi-step vs single page
-    - Auto-save behavior
-
-12. **"How should data be displayed?"**
-    - Lists: table, cards, grid
-    - Filtering approach
-    - Sorting options
-    - Pagination vs infinite scroll
-    - Default view
-    - Empty states
-
-13. **"What feedback patterns do you want?"**
-    - Toast notifications
-    - Modal confirmations
-    - Inline messages
-    - Loading skeletons vs spinners
-    - Undo capability
-
-14. **"Any complex interactions?"**
-    - Drag & drop
-    - Inline editing
-    - Keyboard shortcuts
-    - Bulk actions
-
-### Phase 5: Design System & Components (3-4 min)
-
-15. **"Are you using an existing design system?"**
-    - Material Design, Ant Design, custom
-    - Component library choice
-    - Alignment with tech stack from tech-stack.md
-
-16. **"What's your design philosophy?"**
-    - Minimal vs feature-rich
-    - Playful vs professional
-    - Colorful vs neutral
-    - Dense vs spacious
-
-17. **"What core components do you need?"**
-    - Buttons (primary, secondary, destructive)
-    - Forms (inputs, selects, checkboxes)
-    - Feedback (toasts, modals, banners)
-    - Navigation (navbar, tabs, breadcrumbs)
-    - Data display (tables, cards, lists)
-
-### Phase 6: Accessibility & Responsive Design (2-3 min)
-
-18. **"What accessibility level are you targeting?"**
-    - WCAG A, AA, AAA
-    - Keyboard navigation requirements
-    - Screen reader support
-    - Color contrast needs
-
-19. **"What devices need support?"**
-    - Desktop only, mobile-first, both
-    - Breakpoints approach
-    - Touch vs mouse interactions
-    - Responsive patterns
-
-20. **"Any specific accessibility considerations?"**
-    - High contrast mode
-    - Reduced motion
-    - Large text support
-    - Focus indicators
-
-### Phase 7: UX Principles (2-3 min)
-
-21. **"What are your top 3 UX principles for this product?"**
-
-Examples:
-- Simplicity: Minimize cognitive load
-- Speed: Fast loading, instant feedback
-- Clarity: Clear labels, obvious actions
-- Delight: Smooth animations, helpful hints
-- Accessibility: Inclusive design
-- Consistency: Predictable patterns
-
-22. **"How does this UX support your mission?"**
-
-Connect UX decisions to mission.md goals.
-
-## Document Generation
-
-After UX exploration, create:
-
-### ux-flow.md (3-8 pages)
-
-**Use template**: `.aknakos/templates/ux-flow-template.md`
+Use template: `.aknakos/templates/ux-flow-template.md`
 
 **Fill sections**:
-- **Overview**: Purpose, scope, target users (Q1, Q2)
-- **User Flows**: Primary and secondary flows with steps, edge cases (Q4, Q5)
-- **Interface Structure**: Page hierarchy, navigation patterns (Q7, Q8, Q9, Q10)
-- **Interaction Patterns**: Forms, data display, feedback, complex interactions (Q11-Q14)
-- **UX Principles**: Core principles, design philosophy (Q21, Q22)
-- **Component Library**: Core components, reusable patterns (Q15, Q16, Q17)
-- **Accessibility Considerations**: WCAG compliance, inclusive design (Q18, Q19, Q20)
-- **Design System References**: Framework, color, typography, spacing (Q15, Q16)
-- **Traceability**: Links to mission, architecture, PRD
-- **Wireframes**: ASCII or descriptions for key screens
+- Overview: Purpose, scope, target users (Q1, Q2)
+- User Flows: Primary and secondary flows with steps, edge cases (Q4, Q5)
+- Interface Structure: Page hierarchy, navigation patterns (Q7-Q10)
+- Interaction Patterns: Forms, data display, feedback, complex interactions (Q11-Q14)
+- UX Principles: Core principles, design philosophy (Q21, Q22)
+- Component Library: Core components, reusable patterns (Q15-Q17)
+- Accessibility Considerations: WCAG compliance, inclusive design (Q18-Q20)
+- Design System References: Framework, color, typography, spacing (Q15, Q16)
+- Traceability: Links to mission, architecture, PRD
+- Wireframes: ASCII or descriptions for key screens
 
 **Save to**: `.aknakos/products/{product-name}/YYYY-MM-DD-ux-flow.md`
 
-## Wireframe Creation
+### Wireframe Creation
 
 **For key screens, create ASCII wireframes**:
 
@@ -251,15 +111,11 @@ After UX exploration, create:
 +------------------------------------------+
 ```
 
-**Cover**:
-- Home/landing page
-- Primary user flow screens
-- Key interaction screens (forms, data views)
-- Mobile layouts (if different)
+**Cover**: Home/landing page, primary user flow screens, key interaction screens (forms, data views), mobile layouts (if different)
 
-## Alignment with Architecture
+### Alignment with Architecture
 
-**Connect UX to tech stack**:
+Connect UX to tech stack:
 - Component library matches frontend framework (from tech-stack.md)
 - Interaction patterns align with framework capabilities
 - Performance expectations match architecture
@@ -267,11 +123,11 @@ After UX exploration, create:
 
 **Example**: "Since you're using SvelteKit, we can leverage its server-side rendering for faster initial loads, supporting your 'Speed' UX principle."
 
-## Validation with User
+### Validation with User
 
-**Before finalizing, review key UX decisions**:
+Before finalizing, review key UX decisions:
 
-**"Let me confirm the core UX approach:"**
+"Let me confirm the core UX approach:"
 - Primary user flow: {describe}
 - Navigation pattern: {top nav, sidebar, etc.}
 - Key interactions: {forms, data display}
@@ -279,11 +135,10 @@ After UX exploration, create:
 - Accessibility target: {WCAG AA}
 - Top UX principles: {list 3}
 
-**"Does this UX approach support your users and product goals?"**
+"Does this UX approach support your users and product goals?"
 
-## Output Checklist
+### Output Checklist
 
-Before completion, verify:
 - [ ] ux-flow.md created at `.aknakos/products/{name}/YYYY-MM-DD-ux-flow.md`
 - [ ] Primary user flows documented with steps and edge cases
 - [ ] Interface structure defined (pages, navigation)
@@ -295,15 +150,7 @@ Before completion, verify:
 - [ ] Alignment with mission and architecture verified
 - [ ] User validated the UX approach
 
-## Next Steps
-
-After creating UX flow:
-
-**Suggest**:
-- Create PRD (use `create-prd` skill) - PRD should reference ux-flow.md
-- OR if PRD already exists, ensure alignment with UX flow
-
-## Update Workflow State
+### Update Workflow State
 
 Update `.aknakos/state/workflow.yaml`:
 ```yaml
@@ -311,24 +158,16 @@ products:
   {product-name}:
     current_phase: ux_flow_created
     ux_flow_created: true
-    ux_flow_file: ".aknakos/products/{name}/YYYY-MM-DD-ux-flow.md"
+    ux_flow_file: "YYYY-MM-DD-ux-flow.md"
 ```
 
-## Example Conversation Start
+### Next Steps
 
-**You**: "Let's map out the user experience for [product name]. Who are your primary users, and what's their technical proficiency?"
+After creating UX flow:
+- Create PRD (use `create-prd` skill) - PRD should reference ux-flow.md
+- OR if PRD already exists, ensure alignment with UX flow
 
-**User**: "Primarily non-technical business users who need to track time and generate reports."
-
-**You**: "Got it. What are the 2-3 most critical things they need to accomplish with your product?"
-
-**User**: "Log time entries quickly, view weekly summaries, and export timesheets for billing."
-
-**You**: "Perfect. Let's walk through the primary flow. Where does a user start - do they land on a dashboard, or jump straight into time logging?"
-
-[Continue user-centered exploration...]
-
-## Tips for Effective UX Flows
+### Key Principles
 
 **Keep it user-centric**:
 - Always ask "why does the user need this?"
@@ -352,10 +191,4 @@ products:
 - Plan for color contrast and focus indicators
 - Support reduced motion preferences
 
-## References
-
-- `.aknakos/templates/ux-flow-template.md` - Document structure
-- `.aknakos/products/{name}/mission.md` - Product vision context
-- `.aknakos/products/{name}/tech-stack.md` - Frontend framework and capabilities
-- `.aknakos/products/{name}/architecture.md` - Technical constraints and opportunities
-- `.aknakos/products/{name}/project-brief.md` - User context and market research
+**Related Files**: ux-flow-template.md (structure), mission.md (vision), tech-stack.md (frontend framework), architecture.md (constraints), project-brief.md (user context)

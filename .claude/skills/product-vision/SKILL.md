@@ -1,83 +1,49 @@
 ---
 name: product-vision
-description: Guide strategic product planning through conversational exploration Use when: Starting a new product or major feature direction
+description: Guide strategic product planning through conversational exploration of 5 key areas (fundamentals, users, scope, success metrics, constraints/assumptions). Use when starting a new product or major feature direction.
 ---
 
+## Instructions
 
-**Purpose**: Guide strategic product planning through conversational exploration
+Explore and define product vision through structured yet conversational discussion. Guide through key strategic questions to clarify what you're building and why.
 
-**Phase**: Phase 1 - Strategic Vision
+### When to Use
 
-**When to Use**: Starting a new product or major feature direction
+**Use**: Starting a new product or major feature direction
 
----
-
-## What This Skill Does
-
-This skill helps you explore and define product vision through structured yet conversational discussion. It guides you through key strategic questions to clarify what you're building and why.
+**Phase**: 1 (Strategic Vision)
 
 ---
 
-## Process
+## Process (5 Areas)
 
 ### 1. Product Fundamentals
 
-**Questions to Explore**:
-- What problem are you solving?
-- Who is the target user/customer?
-- What is the core value proposition?
-- Why does this product need to exist?
-- What makes this different from existing solutions?
+**Questions to Explore**: What problem are you solving? Who is the target user/customer? What is the core value proposition? Why does this product need to exist? What makes this different from existing solutions?
 
 **Output**: Clear problem statement and value proposition
 
----
-
 ### 2. User Understanding
 
-**Questions to Explore**:
-- Who are your primary users? (Create simple personas)
-- What are their current pain points?
-- What jobs are they trying to do?
-- What alternatives do they use today?
-- What would make them switch to your solution?
+**Questions to Explore**: Who are your primary users? (Create simple personas) What are their current pain points? What jobs are they trying to do? What alternatives do they use today? What would make them switch to your solution?
 
 **Output**: User personas and pain points
 
----
-
 ### 3. Product Scope
 
-**Questions to Explore**:
-- What is the Minimum Viable Product (MVP)?
-- What features are must-haves vs nice-to-haves?
-- What is explicitly out of scope (for now)?
-- What can we build in 3 months? 6 months? 1 year?
+**Questions to Explore**: What is the Minimum Viable Product (MVP)? What features are must-haves vs nice-to-haves? What is explicitly out of scope (for now)? What can we build in 3 months? 6 months? 1 year?
 
 **Output**: Scope boundaries and phasing
 
----
-
 ### 4. Success Metrics
 
-**Questions to Explore**:
-- How will you know if this product is successful?
-- What metrics matter most? (Usage, revenue, engagement, etc.)
-- What are the target numbers for each metric?
-- What are the key milestones?
+**Questions to Explore**: How will you know if this product is successful? What metrics matter most? (Usage, revenue, engagement, etc.) What are the target numbers for each metric? What are the key milestones?
 
 **Output**: Success criteria and metrics
 
----
-
 ### 5. Constraints & Assumptions
 
-**Questions to Explore**:
-- What are the technical constraints?
-- What are the business constraints? (Budget, timeline, team size)
-- What are the key assumptions we're making?
-- What are the biggest risks?
-- What could cause this product to fail?
+**Questions to Explore**: What are the technical constraints? What are the business constraints? (Budget, timeline, team size) What are the key assumptions we're making? What are the biggest risks? What could cause this product to fail?
 
 **Output**: Constraints, assumptions, and risks
 
@@ -96,7 +62,6 @@ This skill helps you explore and define product vision through structured yet co
 ## Parallel Research Opportunities
 
 During product vision discussions, consider spawning research agents:
-
 - **market-research agent**: Analyze market size, trends, opportunities
 - **competitive-analysis agent**: Research competitors and their offerings
 
@@ -108,30 +73,13 @@ These run in parallel (separate contexts) and report back findings.
 
 **During Skill**: In-context conversation (not saved as files)
 
-**After Skill**: Optionally create:
-- Brief product vision summary
-- User personas
-- Problem statement
+**After Skill**: Optionally create brief product vision summary, user personas, problem statement
 
 **Next Step**: Move to Architecture skill or Create PRD skill
 
 ---
 
-## Example Usage
-
-```
-User: Let's use the product-vision skill to explore this product idea
-
-Claude: Great! Let's explore your product vision. I'll guide you through some key questions.
-
-First, let's start with the fundamentals:
-- What problem are you solving?
-[Conversational exploration begins...]
-```
-
----
-
-## Tips for Success
+## Tips
 
 - Take time with this phase - rush here = problems later
 - Involve stakeholders in the discussion

@@ -377,6 +377,110 @@ Use `context-scope` skill to determine strategy.
 
 ---
 
+## File Structure Standards
+
+**CRITICAL**: When creating or modifying skills/agents, maintain conciseness. Extract verbose content to templates/examples.
+
+### Target Line Counts
+
+**Skills** (`.claude/skills/{name}/SKILL.md`):
+- **Simple**: 80-150 lines (whats-next, context-scope)
+- **Moderate**: 150-280 lines (validate-alignment, epic-breakdown)
+- **Complex**: Never exceed 300 lines
+
+**Agents** (`.claude/agents/{name}.md`):
+- **Review Agents**: 90-180 lines (extract report template + example)
+- **Research Agents**: 150-250 lines (extract research template)
+- **Never exceed**: 250 lines
+
+**Templates** (`.aknakos/templates/`):
+- Report templates: 100-400 lines (comprehensive, reusable)
+- Document templates: Varies by doc type
+
+**Examples** (`.aknakos/examples/`):
+- Single scenario: 100-300 lines
+- Multiple scenarios: 300-500 lines total
+
+### When to Extract
+
+**Extract to Template** if:
+- Repetitive structure (report format, document format)
+- Used across multiple skills/agents
+- >100 lines of format specification
+
+**Extract to Example** if:
+- Detailed walkthrough/scenario
+- Multiple outcome demonstrations (PASS/CONCERNS/FAIL)
+- >50 lines of example content
+
+**Keep Inline** only if:
+- Critical decision logic
+- <20 lines
+- Single reference example for context
+
+### Writing Style
+
+**Use Imperative Language**:
+- ❌ "This skill helps you create..." → ✅ "Generate X by..."
+- ❌ "The process involves..." → ✅ "1. Load X. 2. Execute Y."
+- ❌ "You should consider..." → ✅ "Consider X when Y."
+
+**Remove Redundancy**:
+- ❌ "What This Does" sections (redundant with description)
+- ❌ "When to Use" sections (redundant with description)
+- ❌ Verbose explanations of "how it works"
+- ✅ Keep "what" and "why", remove "how it works"
+
+**Condense Instructions**:
+- Multi-paragraph → Bullet points
+- Nested explanations → Flat lists
+- Tables for comparisons/options
+- Reference examples, don't inline them
+
+### YAML Frontmatter
+
+**Skills** (only documented fields):
+```yaml
+name: skill-name
+description: Concise description (<1024 chars)
+```
+
+**Agents** (only documented fields):
+```yaml
+name: agent-name
+description: Concise description
+tools: Read, Write, Bash, Glob, Grep  # Comma-separated
+model: sonnet  # or haiku
+```
+
+**Never Add**: Custom fields, workflow definitions, validation criteria (put in body instead)
+
+### Quality Checklist
+
+Before saving skill/agent:
+- [ ] Description <1024 chars
+- [ ] YAML uses only documented fields
+- [ ] File references work (templates/examples exist)
+- [ ] Imperative instructions
+- [ ] No redundant "What This Does" sections
+- [ ] Template extracted (if applicable, >100 lines)
+- [ ] Example extracted (if applicable, >50 lines)
+- [ ] Line count within target (see above)
+
+### Simplification Patterns
+
+See `.aknakos/SIMPLIFICATION-TRACKER.md` for detailed patterns:
+1. **Extract Report Template**: Format specs to `.aknakos/templates/reports/`
+2. **Extract Examples**: Detailed scenarios to `.aknakos/examples/`
+3. **Convert to Imperative**: Remove passive/explanatory text
+4. **Condense Process Steps**: Bullet points, not paragraphs
+
+**Results**: 50-80% line reduction while improving scannability
+
+**Enforcement**: Future additions that violate these standards will be refactored immediately
+
+---
+
 ## Version History
 
 **v1.1** (2025-11-09): Claude Code native integration - 25 skills + 11 agents in `.claude/`, instance data in `.aknakos/`

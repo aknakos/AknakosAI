@@ -5,8 +5,6 @@ tools: Read, Write, Bash, Glob, Grep
 model: sonnet
 ---
 
-
-
 ## Agent Purpose
 
 Review code quality, maintainability, standards compliance, documentation, and testing practices.

@@ -5,8 +5,6 @@ tools: Read, Write, Bash, Glob, Grep
 model: sonnet
 ---
 
-
-
 ## Agent Purpose
 
 Audit security implications of implemented code, checking for vulnerabilities, proper authentication/authorization, data protection, and security best practices.
@@ -35,7 +33,6 @@ Audit security implications of implemented code, checking for vulnerabilities, p
 
 **Epic**: {epic-name}
 **Review Date**: {YYYY-MM-DD}
-**Reviewer**: security-reviewer
 **Complexity**: {1-9}
 
 ## Review Outcome
@@ -103,5 +100,5 @@ Audit security implications of implemented code, checking for vulnerabilities, p
 ## Review Criteria
 
 - **PASS**: No critical issues, minor issues acceptable
-- **CONCERNS**: Important issues found, should be addressed  
+- **CONCERNS**: Important issues found, should be addressed
 - **FAIL**: Critical security vulnerabilities must be fixed

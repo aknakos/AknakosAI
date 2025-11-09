@@ -1,50 +1,23 @@
 ---
 name: create-standards
-description: Conversationally create product-specific coding standards
+description: Conversationally create product-specific coding standards (coding conventions, architecture patterns, testing standards, security guidelines, review checklist). Creates YAML files in `.aknakos/products/{name}/standards/` that override framework defaults. Use after mission creation when product has unique requirements.
 ---
 
+## Instructions
 
-**Purpose**: Conversationally create product-specific coding standards
+Create 5 custom standards files in `.aknakos/products/{product-name}/standards/` as YAML to override framework defaults for this product only.
 
-**Phase**: After mission creation (Phase 1a)
+### When to Use
 
-**When to Use**:
-- User wants custom standards for this product
-- Product has unique requirements (e.g., different tech stack, stricter security)
-- Team has specific conventions different from framework defaults
+**Use**: Product has unique requirements (different tech stack, stricter security, team-specific conventions)
 
-**Duration**: 10-15 minutes
+**Prerequisites**: `.aknakos/products/{product-name}/mission.md` must exist
 
----
-
-## What This Skill Does
-
-Creates 5 custom standards files in `.aknakos/products/{product-name}/standards/` as YAML:
-1. `coding-conventions.yaml`
-2. `architecture-patterns.yaml`
-3. `testing-standards.yaml`
-4. `security-guidelines.yaml`
-5. `review-checklist.yaml`
-
-These override framework defaults in `.aknakos/standards/` for this product only.
+**Duration**: 10-15 min
 
 ---
 
-## Prerequisites
-
-**Must exist**:
-- `.aknakos/products/{product-name}/mission.md`
-
-**Load before starting**:
-- `.aknakos/standards/coding-conventions.yaml` (framework defaults)
-- `.aknakos/standards/architecture-patterns.yaml`
-- `.aknakos/standards/testing-standards.yaml`
-- `.aknakos/standards/security-guidelines.yaml`
-- `.aknakos/standards/review-checklist.yaml`
-
----
-
-## Conversation Flow
+## Conversation Flow (7 Questions)
 
 ### Introduction (1 min)
 
@@ -53,19 +26,13 @@ These override framework defaults in `.aknakos/standards/` for this product only
 2. Architecture patterns (structure, database, API design)
 3. Testing standards (TDD workflow, coverage, tools)
 4. Security guidelines (auth, validation, OWASP)
-5. Review checklist (what to check during code review)
+5. Review checklist (code review criteria)
 
-**Framework defaults**: The framework has default standards based on SvelteKit + Svelte 5 + Better-Auth + Drizzle. We'll start with those and customize what's different for your product.
-
-Let's begin!"
-
----
+**Framework defaults**: SvelteKit + Svelte 5 + Better-Auth + Drizzle. We'll start with those and customize what's different."
 
 ### Q1: Tech Stack Differences (2 min)
 
-"**Q1: Tech Stack**
-
-The framework defaults assume:
+"The framework defaults assume:
 - Frontend: SvelteKit + Svelte 5
 - Backend: SvelteKit API routes
 - Database: PostgreSQL + Drizzle ORM
@@ -75,178 +42,68 @@ The framework defaults assume:
 
 **Are you using different technologies for this product?**
 
-Examples:
-- Different frontend framework (React, Vue, etc.)
-- Different backend (Express, Fastify, etc.)
-- Different database (MySQL, MongoDB, etc.)
-- Different auth library
-- Different testing tools (Jest, Playwright, etc.)
+Examples: Different frontend framework (React, Vue), different backend (Express, Fastify), different database (MySQL, MongoDB), different auth library, different testing tools"
 
-If yes, describe the tech stack. If no, we'll use framework defaults."
-
-**Action**:
-- If different tech stack → Note differences for customization
-- If same → Note "using framework defaults for tech stack"
-
----
+Action: If different tech stack → Note differences. If same → Use framework defaults.
 
 ### Q2: Naming Conventions (1-2 min)
 
-"**Q2: Naming Conventions**
-
-Framework defaults:
+"Framework defaults:
 - Components: PascalCase (Hero.svelte)
 - Files: kebab-case (better-auth.ts)
 - Variables: camelCase (userAuthToken)
 - Constants: UPPER_SNAKE_CASE (MAX_RETRY_ATTEMPTS)
 - Database: snake_case (email_verified)
 
-**Do you want different naming conventions for this product?**
-
-Examples:
-- Use snake_case for everything (Python convention)
-- Use PascalCase for files (C# convention)
-- Different constant naming
-
-If no, we'll use framework defaults."
-
-**Action**:
-- If different → Note custom naming conventions
-- If same → Use framework defaults
-
----
+**Do you want different naming conventions?**"
 
 ### Q3: Code Formatting (1 min)
 
-"**Q3: Code Formatting**
+"Framework defaults: Tabs, Single quotes, Semicolons required, 100 char line length
 
-Framework defaults:
-- Indentation: Tabs
-- Quotes: Single
-- Semicolons: Required
-- Line length: 100 characters
-
-**Do you want different formatting for this product?**
-
-If no, we'll use framework defaults."
-
-**Action**:
-- If different → Note custom formatting rules
-- If same → Use framework defaults
-
----
+**Do you want different formatting?**"
 
 ### Q4: Architecture Patterns (2-3 min)
 
-"**Q4: Architecture Organization**
+"Framework default: Feature-based layered (routes/, lib/server/, lib/shared/)
 
-Framework default: Feature-based layered (routes/, lib/server/, lib/shared/)
+**Does this product need different organization?**
 
-**Does this product need a different organization pattern?**
+Examples: Domain-driven design (DDD), microservices, monorepo, different folder structure
 
-Examples:
-- Domain-driven design (DDD)
-- Microservices architecture
-- Monorepo with multiple apps
-- Different folder structure
-
-**Also, any specific architecture constraints?**
-- Serverless-only (Vercel/Railway)
-- Traditional server deployment
-- Multi-region requirements
-- Offline-first
-
-If no special needs, we'll use framework defaults."
-
-**Action**:
-- Note any architecture differences
-- Note deployment constraints
-
----
+**Any specific architecture constraints?** (Serverless-only, multi-region, offline-first)"
 
 ### Q5: Testing Requirements (2-3 min)
 
-"**Q5: Testing Standards**
-
-Framework defaults:
+"Framework defaults:
 - TDD workflow: RED → GREEN → REFACTOR (mandatory)
 - Coverage: 80% unit tests, 100% API endpoints, critical flows E2E
 - Tools: Vitest (unit/component), Cypress (E2E)
 
-**Does this product have different testing requirements?**
+**Different testing requirements?**
 
-Examples:
-- Higher/lower coverage requirements
-- Different E2E tool (Playwright instead of Cypress)
-- Additional test types (performance, load, security)
-- Visual regression testing
-- Different TDD rules
-
-If no, we'll use framework defaults."
-
-**Action**:
-- Note any testing requirement differences
-- Note any additional test types needed
-
----
+Examples: Higher/lower coverage, different E2E tool (Playwright), additional test types (performance, load, security, visual regression)"
 
 ### Q6: Security Requirements (2-3 min)
 
-"**Q6: Security Standards**
-
-Framework defaults:
+"Framework defaults:
 - Auth: Better-Auth with bcrypt (12 rounds)
 - Password: 8+ chars, 1 number, 1 special char
 - OWASP Top 10 protection
 - Rate limiting on auth endpoints
 - Security headers via SvelteKit hooks
 
-**Does this product have stricter or different security requirements?**
+**Stricter or different security requirements?**
 
-Examples:
-- Compliance needs (HIPAA, SOC 2, GDPR)
-- Stricter password requirements (14+ chars, multiple special chars)
-- MFA required
-- Additional auth methods (OAuth, SSO, SAML)
-- Industry-specific security standards
-- Penetration testing requirements
-
-If no special security needs, we'll use framework defaults."
-
-**Action**:
-- Note any compliance requirements
-- Note any stricter security rules
-- Note additional auth methods
-
----
+Examples: Compliance needs (HIPAA, SOC 2, GDPR), stricter password requirements (14+ chars), MFA required, additional auth methods (OAuth, SSO, SAML), industry-specific security standards"
 
 ### Q7: Review Checklist Additions (1-2 min)
 
-"**Q7: Code Review Checklist**
+"Framework defaults cover: Functionality, Testing (TDD), Code Quality, Architecture, Security, Performance, Documentation, Dependencies, Alignment (Epic/PRD/Mission)
 
-Framework defaults cover:
-- Functionality, Testing (TDD), Code Quality
-- Architecture, Security, Performance
-- Documentation, Dependencies
-- Alignment (Epic/PRD/Mission)
+**Additional review criteria?**
 
-**Does this product need additional review criteria?**
-
-Examples:
-- Accessibility requirements (WCAG 2.1 AA)
-- Mobile responsiveness checks
-- Browser compatibility requirements
-- Localization/i18n checks
-- API contract versioning
-- Specific performance budgets
-
-If no, we'll use framework defaults."
-
-**Action**:
-- Note any additional review criteria
-- Note any specific quality gates
-
----
+Examples: Accessibility requirements (WCAG 2.1 AA), mobile responsiveness, browser compatibility, localization/i18n, API contract versioning, performance budgets"
 
 ### Summary & Creation (2 min)
 
@@ -258,19 +115,13 @@ Based on your answers, here's what will be customized for {product-name}:
 
 **Creating product-specific standards...**"
 
-**Action**:
+Action:
 1. Create `.aknakos/products/{product-name}/standards/` directory
 2. For each of 5 standards files:
    - If customization needed → Create custom YAML with overrides
    - If using defaults → Skip file (framework defaults will be used)
 3. Save files
-4. Update `workflow.yaml`:
-   ```yaml
-   products:
-     {product-name}:
-       standards_customized: true/false
-       standards_files: [list of customized files]
-   ```
+4. Update `workflow.yaml`
 
 ---
 
@@ -278,7 +129,7 @@ Based on your answers, here's what will be customized for {product-name}:
 
 Only create files that differ from framework defaults.
 
-**Example** (if only security needs customization):
+Example (if only security needs customization):
 
 ```yaml
 # products/my-product/standards/security-guidelines.yaml
@@ -315,26 +166,11 @@ compliance:  # CUSTOM: Added compliance section
 
 ## Guidelines
 
-**Conversational**:
-- One question at a time
-- Wait for user response before next question
-- Explain why each question matters
-- Provide examples
+**Conversational**: One question at a time, wait for user response, explain why each question matters, provide examples
 
-**Concise**:
-- Only create files that differ from defaults
-- Use YAML (not markdown)
-- Focus on rules, not examples (Claude can search docs)
+**Concise**: Only create files that differ from defaults, use YAML (not markdown), focus on rules not examples
 
-**Portable**:
-- No references to specific projects
-- No hardcoded paths
-- Framework-agnostic where possible
-
-**Pragmatic**:
-- If user says "use defaults", skip that section
-- Don't force customization if not needed
-- Allow "I'll decide later" → Use defaults for now
+**Pragmatic**: If user says "use defaults", skip that section. Don't force customization. Allow "I'll decide later" → Use defaults for now
 
 ---
 
@@ -350,7 +186,7 @@ products:
     standards_date: "2025-11-08"
 ```
 
-**Tell user**:
+Tell user:
 "✅ Product-specific standards created in `.aknakos/products/{product-name}/standards/`
 
 **Precedence**: Your custom standards will be used for this product. Framework defaults in `.aknakos/standards/` apply for everything else.
@@ -363,16 +199,14 @@ products:
 
 ## Error Handling
 
-**If mission.md doesn't exist**:
-"❌ Error: mission.md not found. Please run `create-mission` skill first."
+**If mission.md doesn't exist**: "❌ Error: mission.md not found. Please run `create-mission` skill first."
 
-**If standards directory already exists**:
-"⚠️ Standards directory already exists for {product-name}. Overwrite? [Yes/No]"
+**If standards directory already exists**: "⚠️ Standards directory already exists for {product-name}. Overwrite? [Yes/No]"
 
 ---
 
 ## Related Skills
 
-- **create-mission**: Creates mission.md (prerequisite)
-- **create-prd**: Next step after standards (references standards)
-- **context-scope**: Explains when to load standards (Tier 3)
+- `create-mission`: Creates mission.md (prerequisite)
+- `create-prd`: Next step after standards (references standards)
+- `context-scope`: Explains when to load standards (Tier 3)
