@@ -107,8 +107,8 @@ current_work:
 
 Based on phase:
 - **Planning**: "Continue planning mode? Shift+Tab×2"
-- **TDD Tests**: "Run tests to verify RED: `npm test`"
-- **TDD Implementation**: "Run tests: `npm test`, then continue implementing"
+- **TDD Tests**: "Run tests to verify RED: `bun run test`"
+- **TDD Implementation**: "Run tests: `bun run test`, then continue implementing"
 - **Review**: "Review reports available. Address feedback?"
 
 ### Git Stash Cleanup

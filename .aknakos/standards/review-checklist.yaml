@@ -94,7 +94,7 @@ documentation:
 # Dependencies
 dependencies:
   - "New dependencies justified"
-  - "No known vulnerabilities (npm audit pass)"
+  - "No known vulnerabilities (bun audit pass)"
   - "Dependencies up-to-date (or upgrade plan documented)"
   - "License compatible (MIT, Apache 2.0, BSD)"
   - "Dependency size reasonable"
@@ -186,7 +186,7 @@ automated_checks:
     - "Unit tests (vitest)"
     - "Integration tests"
     - "E2E tests (cypress or playwright)"
-    - "Security scanning (npm audit)"
+    - "Security scanning (bun audit)"
     - "Dependency audit"
     - "Code coverage (80%+ unit tests)"
   focus_manual_review_on:

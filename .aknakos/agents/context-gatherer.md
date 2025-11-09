@@ -306,9 +306,9 @@ interface User {
 - Routes: `src/api/**/*.ts`
 
 **Scripts**:
-- Build: `npm run build`
-- Test: `npm test`
-- Dev: `npm run dev`
+- Build: `bun run build`
+- Test: `bun run test`
+- Dev: `bun run dev`
 
 ## Gotchas & Considerations
 

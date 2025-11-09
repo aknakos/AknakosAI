@@ -13,8 +13,12 @@ BLUE='\033[1;34m'
 BOLD='\033[1m'
 RESET='\033[0m'
 
+# Auto-detect project directory (script is in .claude/, project root is parent)
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
 # Get workflow state file path
-WORKFLOW_FILE="${HOME}/Projects/AknakosAI/.aknakos/state/workflow.yaml"
+WORKFLOW_FILE="${PROJECT_ROOT}/.aknakos/state/workflow.yaml"
 
 # Check if workflow file exists
 if [[ ! -f "$WORKFLOW_FILE" ]]; then
@@ -23,7 +27,7 @@ if [[ ! -f "$WORKFLOW_FILE" ]]; then
 fi
 
 # Use local yq binary if available, otherwise check system
-YQ_BIN="${HOME}/Projects/AknakosAI/.claude/yq"
+YQ_BIN="${PROJECT_ROOT}/.claude/yq"
 if [[ ! -f "$YQ_BIN" ]]; then
     # Fall back to system yq
     if ! command -v yq &> /dev/null; then

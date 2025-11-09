@@ -320,8 +320,8 @@ interface Session {
 - Middleware: Applied to all `/api/*` routes except auth endpoints
 
 **Scripts**:
-- Test: `npm test` (runs Jest)
-- Dev: `npm run dev` (starts dev server)
+- Test: `bun run test` (runs Vitest via package.json)
+- Dev: `bun run dev` (starts dev server)
 
 ## Gotchas & Considerations
 

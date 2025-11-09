@@ -129,11 +129,11 @@ performance:
 
 # CI/CD Integration
 ci_cd:
-  pre_commit: "npm run test:unit && npm run lint"
+  pre_commit: "bun run test:unit && bun run lint"
   ci_pipeline:
-    - "npm run test"
-    - "npm run test:e2e"
-    - "npm run coverage"
+    - "bun run test"
+    - "bun run test:e2e"
+    - "bun run coverage"
   fail_build_if:
     - "Any test fails"
     - "Coverage drops below 80%"

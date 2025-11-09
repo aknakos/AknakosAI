@@ -35,7 +35,7 @@ Epic status: in_progress
 Context: You were implementing password complexity rules
 
 Next step: Make remaining 3 tests pass
-Run: npm test
+Run: bun run test
 
 Ready to continue!
 ```
@@ -88,7 +88,7 @@ Files modified:
 - src/auth/validation.test.ts
 - src/auth/validation.ts
 
-Ready to continue. Run `npm test` to see current test status.
+Ready to continue. Run `bun run test` to see current test status.
 ```
 
 ---
@@ -169,7 +169,7 @@ Last working on: Password complexity validation
 You left off implementing password validation rules.
 3 tests still failing.
 
-Run `npm test` to see current status.
+Run `bun run test` to see current status.
 ```
 
 ---
@@ -281,7 +281,7 @@ Phase: TDD Implementation
 Progress: 5/8 tests passing
 Last working on: Password complexity validation
 
-After resolving conflicts, run `npm test` to verify tests still pass.
+After resolving conflicts, run `bun run test` to verify tests still pass.
 ```
 
 ---
@@ -354,7 +354,7 @@ Files restored:
 - src/payments/stripe.ts
 
 Next step: Complete remaining 2 tests
-Run `npm test` to verify current state
+Run `bun run test` to verify current state
 ```
 
 ---
@@ -427,12 +427,12 @@ products:
 - Continue defining Stories/Tasks/Test specs
 
 **TDD Tests Written**:
-- Run tests to verify RED state: `npm test`
+- Run tests to verify RED state: `bun run test`
 - Review tests against plan
 - Proceed to implementation
 
 **TDD Implementation**:
-- Run tests to see current status: `npm test`
+- Run tests to see current status: `bun run test`
 - Continue implementing to make tests pass
 - Keep tests unchanged
 

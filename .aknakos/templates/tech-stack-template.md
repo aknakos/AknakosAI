@@ -56,8 +56,8 @@
 
 ### Development Tools
 - **Version Control**: {Git, etc.}
-- **Package Manager**: {npm, yarn, etc.}
-- **Build Tool**: {Webpack, Vite, etc.}
+- **Package Manager**: {bun, etc.}
+- **Build Tool**: {Vite, etc.}
 
 ### Testing
 - **Unit Testing**: {Framework}

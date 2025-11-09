@@ -44,11 +44,11 @@ owasp_top_10:
     - "Document security decisions in ADRs"
   security_misconfiguration:
     - "Remove default credentials"
-    - "Keep dependencies updated (npm audit)"
+    - "Keep dependencies updated (bun audit)"
     - "Disable unnecessary features"
     - "Use security headers (SvelteKit hooks)"
   vulnerable_components:
-    - "Run npm audit regularly"
+    - "Run bun audit regularly"
     - "Update vulnerable packages"
     - "Use Dependabot or Renovate"
   authentication_failures:
@@ -187,11 +187,11 @@ security_checklist:
     - "Svelte auto-escaping (no @html unless needed)"
     - "Authorization checks on all protected routes"
     - "Secrets in environment variables"
-    - "Dependencies audited (npm audit fix)"
+    - "Dependencies audited (bun update --security)"
     - "Error messages don't leak info"
     - "Security events logged"
   ongoing:
-    - "Weekly npm audit"
+    - "Weekly bun audit"
     - "Monthly dependency updates"
     - "Review security logs"
     - "Test authentication flows"
