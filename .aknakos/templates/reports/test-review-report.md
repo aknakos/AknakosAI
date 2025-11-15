@@ -71,6 +71,45 @@
 - **Integration Tests**: {coverage description}
 - **E2E Tests**: {coverage description}
 
+### Testing Pyramid Compliance
+
+**Test Distribution**:
+- **Unit Tests**: {count} ({percentage}%) - Target: 70-80%
+- **Integration Tests**: {count} ({percentage}%) - Target: 15-20%
+- **E2E Tests**: {count} ({percentage}%) - Target: 5-10%
+- **Total Tests**: {count}
+
+**Pyramid Compliance**: ✅ GOOD / ⚠️ CONCERNS / ❌ POOR
+
+**Issues**:
+- {Issue if E2E > 15%: "Too many E2E tests ({count}), exceeds 10-15% target"}
+- {Issue if E2E > 10 tests: "E2E test count ({count}) exceeds maximum (5-10 tests)"}
+- {Issue if Unit < 60%: "Insufficient unit test coverage ({percentage}%)"}
+
+### E2E Test Boundary Check
+
+**E2E Tests Reviewed**: {count}
+
+**Anti-Patterns Found**:
+- {test-name}: Testing error scenario (should be integration test)
+- {test-name}: Testing edge case (should be unit test)
+- {test-name}: Testing validation (should be unit test)
+
+**E2E Tests Properly Scoped**: {count}/{total} tests are happy path only
+
+**Rating**: ✅ PASS / ⚠️ CONCERNS / ❌ FAIL
+
+### Edge Case Coverage
+
+**Edge Cases in Unit Tests**: ✅ Comprehensive / ⚠️ Partial / ❌ Missing
+- {List key edge cases covered in unit tests}
+
+**Error Scenarios in Integration Tests**: ✅ Comprehensive / ⚠️ Partial / ❌ Missing
+- {List error scenarios covered in integration tests}
+
+**Edge Cases in E2E Tests** (should be NONE): {count found}
+- {List any edge cases incorrectly placed in E2E tests}
+
 ### Coverage by Acceptance Criterion
 
 | Acceptance Criterion | Tests Covering It | Status |
@@ -169,6 +208,8 @@
 **Test-Plan Alignment**: {PASS/CONCERNS/FAIL}
 **TDD Compliance**: {PASS/CONCERNS/FAIL}
 **Test Coverage**: {PASS/CONCERNS/FAIL}
+**Testing Pyramid Compliance**: {GOOD/CONCERNS/POOR}
+**E2E Boundary Check**: {PASS/CONCERNS/FAIL}
 **Test Quality**: {GOOD/NEEDS IMPROVEMENT/POOR}
 **Requirements Traceability**: {PASS/CONCERNS/FAIL}
 

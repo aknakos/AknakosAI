@@ -1,6 +1,76 @@
 # Testing Standards
-version: "2.0"
-updated: "2025-11-08"
+version: "2.1"
+updated: "2025-11-15"
+
+# Testing Pyramid (Distribution Strategy)
+testing_pyramid:
+  philosophy: "Write lots of small fast tests, fewer slow tests"
+  ratios:
+    unit: "70-80% - Fast, isolated, comprehensive edge cases"
+    integration: "15-20% - Component interactions, APIs, DB operations"
+    e2e: "5-10% - Critical happy paths ONLY, minimal tests"
+  guidelines:
+    - "E2E tests are expensive (slow, flaky, maintenance-heavy)"
+    - "Test edge cases and errors in unit/integration tests, NOT E2E"
+    - "Typical application: 5-10 E2E tests maximum"
+    - "Each test level has distinct purpose - no overlap"
+
+# Test Boundaries (What to Test Where)
+test_boundaries:
+  unit_tests:
+    purpose: "Isolated logic, edge cases, error handling"
+    test_here:
+      - "Pure function logic (validation, calculations, transformations)"
+      - "Edge cases (empty, null, boundary values, invalid input)"
+      - "Error handling (throw correct errors, handle exceptions)"
+      - "Business rules and validation logic"
+    examples:
+      - "validateEmail('') → should reject empty"
+      - "calculateDiscount(-1) → should throw error"
+      - "parseDate('invalid') → should return null"
+    do_not_test:
+      - "User interactions (use component tests)"
+      - "API calls (use integration tests)"
+      - "Database operations (use integration tests)"
+      - "Full workflows (use E2E tests)"
+
+  integration_tests:
+    purpose: "Component interactions, external dependencies, error scenarios"
+    test_here:
+      - "Component behavior with user interactions"
+      - "API endpoint request/response handling"
+      - "Database operations (CRUD, constraints, transactions)"
+      - "Third-party service integration"
+      - "Error scenarios (API failures, DB errors, invalid responses)"
+    examples:
+      - "Login with wrong password → shows error message"
+      - "Submit form with missing fields → validation errors appear"
+      - "API returns 500 → user sees friendly error"
+      - "Database constraint violation → proper error handling"
+    do_not_test:
+      - "Pure logic without dependencies (use unit tests)"
+      - "Complete user journeys (use E2E tests)"
+
+  e2e_tests:
+    purpose: "Critical happy paths only - verify core flows work end-to-end"
+    test_here:
+      - "1-3 most critical user journeys (auth, checkout, core workflow)"
+      - "Happy path only (successful scenarios)"
+      - "High-value, high-risk flows"
+      - "Workflows users perform most frequently"
+    examples:
+      - "User registers → verifies email → logs in → sees dashboard"
+      - "User adds item → checkout → payment → order confirmation"
+      - "User logs in → creates resource → sees success"
+    do_not_test:
+      - "Edge cases (test in unit tests)"
+      - "Error scenarios (test in integration tests)"
+      - "All possible variations (keep E2E minimal)"
+      - "Field validation (test in component/unit tests)"
+    limits:
+      - "Maximum 5-10 E2E tests per application"
+      - "Each test < 5 seconds"
+      - "Focus on happy paths, not comprehensive coverage"
 
 # TDD Workflow (Mandatory)
 tdd_workflow:
@@ -26,31 +96,41 @@ test_structure:
     - "describe('Invalid passwords - too short') > it('should reject...')"
     - "describe('Invalid passwords - multiple violations') > it('should reject...')"
 
-# Test Types
+# Test Types (Implementation Details)
 test_types:
   unit:
-    scope: "Pure functions, business logic, utilities"
+    scope: "Pure functions, business logic, utilities (see test_boundaries above)"
     speed: "< 10ms each"
     dependencies: "Mock everything"
-    focus: "Comprehensive edge cases"
+    focus: "Comprehensive edge cases, error handling, boundary conditions"
     library: "vitest"
+    target_ratio: "70-80% of total tests"
   component:
     scope: "Svelte components, user interactions"
     approach: "User-centric (test behavior not implementation)"
     actions: "Fire events, assert DOM"
     selectors: "Accessibility-focused (getByRole, getByLabelText)"
     library: "@testing-library/svelte"
+    target_ratio: "Part of integration tests (15-20%)"
   api_integration:
     scope: "SvelteKit endpoints, database operations"
     mocks: "$env/static/private, database, external APIs"
-    verify: "Request/response handling, database interactions"
+    verify: "Request/response handling, database interactions, error scenarios"
     library: "vitest"
+    target_ratio: "Part of integration tests (15-20%)"
   e2e:
-    scope: "Full user workflows"
-    characteristics: "Real browser, real database"
+    scope: "Critical happy paths ONLY - successful user journeys end-to-end"
+    characteristics: "Real browser, real database, full stack"
     speed: "< 5s each"
-    coverage: "Critical flows only (auth, payment, core features)"
+    coverage: "1-3 most critical workflows (auth success, checkout success, core feature success)"
+    limits: "5-10 tests maximum per application"
     library: "cypress or playwright"
+    target_ratio: "5-10% of total tests"
+    anti_patterns:
+      - "❌ Testing error scenarios in E2E (use integration tests)"
+      - "❌ Testing validation in E2E (use unit/component tests)"
+      - "❌ Testing edge cases in E2E (use unit tests)"
+      - "❌ Writing E2E for every feature (only critical flows)"
 
 # Mocking Patterns
 mocking:
@@ -75,19 +155,43 @@ test_organization:
 
 # Coverage Requirements
 coverage:
-  unit_tests: "80% line coverage"
-  api_endpoints: "100% of endpoints tested"
-  critical_flows: "100% E2E coverage (auth, payment, core)"
-  what_to_test:
-    - "Business logic"
-    - "Edge cases (empty, null, boundary values)"
-    - "Error handling"
-    - "Validation logic"
-    - "User interactions"
+  overall_target: "80%+ line coverage across all tests"
+  by_test_type:
+    unit_tests: "80%+ line coverage (comprehensive edge cases)"
+    integration_tests: "100% of API endpoints, error scenarios, component interactions"
+    e2e_tests: "1-3 critical happy paths only (NOT comprehensive coverage)"
+
+  critical_flows_strategy:
+    happy_path: "E2E tests (login success, checkout success, core workflow success)"
+    error_scenarios: "Integration tests (wrong password, network failure, validation errors)"
+    edge_cases: "Unit tests (empty input, boundary values, null handling)"
+    example: |
+      Auth Flow Coverage:
+      - E2E: User registers → verifies email → logs in → sees dashboard (1 test)
+      - Integration: Login with wrong password, login with unverified email, login rate limiting (3-5 tests)
+      - Unit: Email validation edge cases, password strength checks (10+ tests)
+
+  what_to_test_where:
+    unit_level:
+      - "Business logic with edge cases"
+      - "Edge cases (empty, null, boundary values, invalid input)"
+      - "Error handling logic"
+      - "Validation rules"
+    integration_level:
+      - "User interactions (clicks, form submissions)"
+      - "API error scenarios (500, 404, timeout)"
+      - "Database operations and constraints"
+      - "Component behavior with state changes"
+    e2e_level:
+      - "1-3 critical happy paths only"
+      - "Most frequent user workflows (successful scenarios)"
+      - "High-value flows (auth success, payment success)"
+
   what_not_to_test:
-    - "Third-party libraries"
+    - "Third-party libraries (assume they work)"
     - "Framework internals (SvelteKit, Drizzle)"
     - "Trivial getters/setters"
+    - "Generated code"
 
 # Vitest Configuration
 vitest_config:

@@ -114,7 +114,57 @@ For each test specification in the plan, verify:
 **Coverage Thresholds**:
 - Unit tests: Aim for 80%+ coverage
 - Integration tests: All API endpoints/integrations covered
-- E2E tests: Critical user flows covered
+- E2E tests: 1-3 critical happy paths only (NOT comprehensive)
+
+#### Step 5a: Testing Pyramid Compliance
+
+**Critical Check**: Verify tests follow the testing pyramid (70-80% unit, 15-20% integration, 5-10% E2E)
+
+**Count Tests by Type**:
+- Unit tests: `*.test.ts` in lib/, utils/, etc.
+- Integration tests: `*.test.ts` in routes/, components/
+- E2E tests: `*.spec.ts` in tests/e2e/
+
+**Calculate Ratios**:
+- Unit %: (unit count / total count) × 100
+- Integration %: (integration count / total count) × 100
+- E2E %: (e2e count / total count) × 100
+
+**Flag Issues**:
+- ⚠️ E2E > 15% of total tests → "Too many E2E tests, slow test suite"
+- ⚠️ E2E > 10 tests → "E2E test count exceeds recommended maximum (5-10)"
+- ⚠️ Unit < 60% of total tests → "Insufficient unit test coverage"
+
+#### Step 5b: E2E Test Boundary Check
+
+**Review Each E2E Test**: Verify E2E tests only cover happy paths
+
+**Check for Anti-Patterns** (flag if found in E2E tests):
+- ❌ Testing error scenarios (wrong password, invalid input, network errors)
+- ❌ Testing edge cases (empty input, null values, boundary conditions)
+- ❌ Testing validation logic (field validation, format checking)
+- ❌ Testing non-critical features (settings, profile edits, filters)
+
+**E2E tests should ONLY**:
+- ✅ Test critical user journeys (auth, checkout, core workflow)
+- ✅ Test happy paths (successful scenarios)
+- ✅ Be 1-3 most important workflows
+
+**If Anti-Patterns Found**:
+- Flag test name and what it's testing
+- Recommend moving to integration or unit test
+- Explain why (speed, maintainability, pyramid ratio)
+
+#### Step 5c: Edge Case Coverage Check
+
+**Verify Edge Cases Are NOT in E2E Tests**:
+- Check E2E test names/descriptions for: "invalid", "error", "empty", "null", "wrong", "fail"
+- If found → ⚠️ CONCERNS: "Edge case testing in E2E (should be unit/integration)"
+
+**Verify Edge Cases ARE in Unit/Integration Tests**:
+- Look for comprehensive edge case coverage in unit tests
+- Look for error scenario coverage in integration tests
+- If missing → ⚠️ CONCERNS: "Edge cases not adequately covered by unit tests"
 
 #### Step 6: Test Quality Assessment
 
@@ -343,6 +393,9 @@ Return a structured review report:
 - ✅ Test coverage >80%
 - ✅ All acceptance criteria have tests
 - ✅ Test quality is good (isolated, clear, maintainable)
+- ✅ Testing pyramid ratio is reasonable (unit 60-85%, integration 10-25%, E2E 5-15%)
+- ✅ E2E tests ≤10 total and only test happy paths
+- ✅ Edge cases covered in unit tests, not E2E
 
 #### CONCERNS Conditions:
 - ⚠️ 75-90% of test specifications exist (some missing)
@@ -350,6 +403,9 @@ Return a structured review report:
 - ⚠️ Test coverage 60-80%
 - ⚠️ Most but not all acceptance criteria covered
 - ⚠️ Some test quality issues
+- ⚠️ Pyramid ratio slightly off (E2E 10-20% or unit 50-70%)
+- ⚠️ E2E tests 10-15 total (slightly too many)
+- ⚠️ Some edge cases in E2E tests (should move to unit/integration)
 
 #### FAIL Conditions:
 - ❌ <75% of test specifications exist
@@ -357,6 +413,9 @@ Return a structured review report:
 - ❌ Test coverage <60%
 - ❌ Multiple acceptance criteria not covered
 - ❌ Poor test quality (not isolated, hard to maintain)
+- ❌ Pyramid inverted (E2E >20% or unit <50%)
+- ❌ E2E tests >15 total (way too many, will be slow)
+- ❌ Many edge cases/error scenarios in E2E tests (wrong test type)
 
 ---
 

@@ -237,6 +237,24 @@ Use `epic-review` skill to synthesize review reports, extract learnings, identif
 
 ---
 
+## Testing Pyramid
+
+**Distribution**: 70-80% unit, 15-20% integration, 5-10% E2E
+
+**Boundaries**:
+- **Unit tests**: Edge cases, pure logic, validation (comprehensive)
+- **Integration tests**: Component interactions, APIs, DB, error scenarios
+- **E2E tests**: Critical happy paths ONLY (5-10 tests max)
+
+**Anti-Patterns**:
+- ❌ Testing edge cases in E2E (use unit tests)
+- ❌ Testing error scenarios in E2E (use integration tests)
+- ❌ >10-15 E2E tests (too slow, unmaintainable)
+
+**Reference**: See `testing-standards.yaml` and `test-boundary-guide.md` for detailed boundaries.
+
+---
+
 ## Alternatives Pattern
 
 **When**: Present alternatives for tech/architecture decisions (frameworks, databases, patterns, auth methods, state management).
